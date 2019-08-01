@@ -1,0 +1,10 @@
+﻿<?xml version="1.0"?>
+<DTS:ConnectionManager xmlns:DTS="www.microsoft.com/SqlServer/Dts"
+  DTS:ObjectName="BF_SMTP"
+  DTS:DTSID="{3897341D-A37A-490C-A35B-2B33B7E18A43}"
+  DTS:CreationName="SMTP">
+  <DTS:ObjectData>
+    <SmtpConnectionManager
+      ConnectionString="SmtpServer=smtp.gmail.com;UseWindowsAuthentication=True;EnableSsl=True;" />
+  </DTS:ObjectData>
+</DTS:ConnectionManager>

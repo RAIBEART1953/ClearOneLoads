@@ -1,0 +1,2230 @@
+﻿<?xml version="1.0"?>
+<DTS:Executable xmlns:DTS="www.microsoft.com/SqlServer/Dts"
+  DTS:refId="Package"
+  DTS:CreationDate="7/24/2019 1:25:55 PM"
+  DTS:CreationName="Microsoft.Package"
+  DTS:CreatorComputerName="HOU-IT-RSTEWART"
+  DTS:CreatorName="HOU-IT-RSTEWART\rstewart"
+  DTS:DTSID="{0B1E2BED-E056-4F31-A3C2-366DAEE614D3}"
+  DTS:ExecutableType="Microsoft.Package"
+  DTS:LastModifiedProductVersion="15.0.1301.433"
+  DTS:LocaleID="1033"
+  DTS:ObjectName="ClearOneMissingDocs"
+  DTS:PackageType="5"
+  DTS:VersionBuild="5"
+  DTS:VersionGUID="{7CACDD86-69EA-4C8F-B1DC-42F4A543B4E6}">
+  <DTS:Property
+    DTS:Name="PackageFormatVersion">8</DTS:Property>
+  <DTS:ConnectionManagers>
+    <DTS:ConnectionManager
+      DTS:refId="Package.ConnectionManagers[BF_Redsift_Prod.rstewart]"
+      DTS:CreationName="ODBC"
+      DTS:DTSID="{905DD0CB-A8ED-403E-99DD-9036C2CC7C5A}"
+      DTS:ObjectName="BF_Redsift_Prod.rstewart">
+      <DTS:ObjectData>
+        <DTS:ConnectionManager
+          DTS:ConnectionString="uid=rstewart;Dsn=BF_Redsift_Prod;">
+          <DTS:Password
+            DTS:Name="pwd"
+            Sensitive="1"
+            Encrypted="1">AQAAANCMnd8BFdERjHoAwE/Cl+sBAAAAiDG1xzRZH0SK/dQzRrOPYAAAAAAIAAAARABUAFMAAAAQZgAAAAEAACAAAAB17N3L+dSJKLov/b+FfG3JN/y5vSmXNTyXo8Z7uQzCbgAAAAAOgAAAAAIAACAAAABimISiAKQG7FednnflezUeKHH5bXJgSVhpIKYZsJKQRSAAAAAgnFNqxN/8RYt7PenbaHsAV/RfFVXNDignK6MY1jhUs0AAAABFljc8kTp7Apy72MSLvPwe/HEWwmvNnfetCKntvDeOhGiiKP41lpJ2+hcS58Ur5ZUSZ/uPwk4iA02F62AjwNqs</DTS:Password>
+        </DTS:ConnectionManager>
+      </DTS:ObjectData>
+    </DTS:ConnectionManager>
+    <DTS:ConnectionManager
+      DTS:refId="Package.ConnectionManagers[Excel Connection Manager 1]"
+      DTS:CreationName="EXCEL+"
+      DTS:DTSID="{94F763D0-FC59-421B-A437-71452C59B0F9}"
+      DTS:ObjectName="Excel Connection Manager 1">
+      <DTS:ObjectData>
+        <ConnectionManager
+          ConnectionString="ExcelFilePath=G:\My Drive\ClearOne_DataLoad\ClearOne_MissingDocs_With_AgentMgr.xlsx;FormatType=Auto;Recalculate=False;DateTimeFormat=;RetainSameConnection=True;" />
+      </DTS:ObjectData>
+    </DTS:ConnectionManager>
+    <DTS:ConnectionManager
+      DTS:refId="Package.ConnectionManagers[Excel Connection Manager 2]"
+      DTS:CreationName="EXCEL+"
+      DTS:DTSID="{F46F1C12-925E-47FA-B56E-43C3263C1BD9}"
+      DTS:ObjectName="Excel Connection Manager 2">
+      <DTS:ObjectData>
+        <ConnectionManager
+          ConnectionString="ExcelFilePath=G:\My Drive\ClearOne_DataLoad\InventoryReport_20190722 _Update_SY.xlsx;FormatType=Auto;Recalculate=False;DateTimeFormat=;RetainSameConnection=True;" />
+      </DTS:ObjectData>
+    </DTS:ConnectionManager>
+    <DTS:ConnectionManager
+      DTS:refId="Package.ConnectionManagers[HOU-IT-RSTEWART\SQL2017.BF_Redshift_Staging]"
+      DTS:CreationName="OLEDB"
+      DTS:DTSID="{CDDE1198-B0F7-48D0-AB32-48E2BD65ACDC}"
+      DTS:ObjectName="HOU-IT-RSTEWART\SQL2017.BF_Redshift_Staging">
+      <DTS:ObjectData>
+        <DTS:ConnectionManager
+          DTS:ConnectionString="Data Source=HOU-IT-RSTEWART\SQL2017;Initial Catalog=BF_Redshift_Staging;Provider=SQLNCLI11.1;Integrated Security=SSPI;Auto Translate=False;" />
+      </DTS:ObjectData>
+    </DTS:ConnectionManager>
+  </DTS:ConnectionManagers>
+  <DTS:Variables />
+  <DTS:Executables>
+    <DTS:Executable
+      DTS:refId="Package\Clear Staging Tables"
+      DTS:CreationName="Microsoft.ExecuteSQLTask"
+      DTS:Description="Execute SQL Task"
+      DTS:DTSID="{76F16110-2619-49BD-A2E3-9B2DF1AF127C}"
+      DTS:ExecutableType="Microsoft.ExecuteSQLTask"
+      DTS:LocaleID="-1"
+      DTS:ObjectName="Clear Staging Tables"
+      DTS:ThreadHint="0">
+      <DTS:Variables />
+      <DTS:ObjectData>
+        <SQLTask:SqlTaskData
+          SQLTask:Connection="{CDDE1198-B0F7-48D0-AB32-48E2BD65ACDC}"
+          SQLTask:SqlStatementSource="TRUNCATE TABLE &#xA;stg_AllPrograms;&#xA;TRUNCATE TABLE &#xA;stg_ClearOne_MissingData;" xmlns:SQLTask="www.microsoft.com/sqlserver/dts/tasks/sqltask" />
+      </DTS:ObjectData>
+    </DTS:Executable>
+    <DTS:Executable
+      DTS:refId="Package\Load Excel file"
+      DTS:CreationName="Microsoft.Pipeline"
+      DTS:Description="Data Flow Task"
+      DTS:DTSID="{55A5C40E-CBA3-4B32-8023-564274DD2CDC}"
+      DTS:ExecutableType="Microsoft.Pipeline"
+      DTS:LocaleID="-1"
+      DTS:ObjectName="Load Excel file"
+      DTS:TaskContact="Performs high-performance data extraction, transformation and loading;Microsoft Corporation; Microsoft SQL Server; (C) Microsoft Corporation; All Rights Reserved;http://www.microsoft.com/sql/support/default.asp;1">
+      <DTS:Variables />
+      <DTS:ObjectData>
+        <pipeline
+          version="1">
+          <components>
+            <component
+              refId="Package\Load Excel file\Excel Destination Plus"
+              componentClassID="Microsoft.ManagedComponentHost"
+              contactInfo="Inserts data into Excel worksheet.; COZYROC LLC; SSIS+; © 2006-2019 COZYROC LLC; All Rights Reserved; http://www.cozyroc.com/;0"
+              description="Inserts data into Excel worksheet."
+              name="Excel Destination Plus"
+              usesDispositions="true">
+              <properties>
+                <property
+                  dataType="System.Null"
+                  name="ComponentObject"
+                  typeConverter="NOTBROWSABLE" />
+                <property
+                  dataType="System.String"
+                  description="Destination Excel worksheet."
+                  expressionType="Notify"
+                  name="Worksheet"
+                  typeConverter="CozyRoc.SqlServer.SSIS.TableEditor">Sheet1</property>
+                <property
+                  dataType="System.Boolean"
+                  description="Specifies first row contains column names."
+                  name="FirstRowHasColumnName">true</property>
+                <property
+                  dataType="System.Int32"
+                  description="Specifies destination first column. The value is 1-based."
+                  expressionType="Notify"
+                  name="StartColumn">1</property>
+                <property
+                  dataType="System.Int32"
+                  description="Specifies destination first row. The value is 1-based."
+                  expressionType="Notify"
+                  name="StartRow">1</property>
+                <property
+                  dataType="System.Boolean"
+                  description="Specifies to save Excel workbook at end."
+                  name="SaveAtEnd">true</property>
+                <property
+                  dataType="System.Int32"
+                  description="Specifies input type."
+                  name="InputType"
+                  typeConverter="CozyRoc.SqlServer.SSIS.ExcelDestination+InputTypes">0</property>
+                <property
+                  dataType="System.Int32"
+                  description="Specifies how to handle existing data."
+                  name="ExistingData"
+                  typeConverter="CozyRoc.SqlServer.SSIS.ExcelDestination+ExistingDataTypes">0</property>
+                <property
+                  dataType="System.String"
+                  name="UserComponentTypeName">CozyRoc.ExcelDestination</property>
+              </properties>
+              <connections>
+                <connection
+                  refId="Package\Load Excel file\Excel Destination Plus.Connections[EXCEL+]"
+                  connectionManagerID="Package.ConnectionManagers[Excel Connection Manager 1]"
+                  connectionManagerRefId="Package.ConnectionManagers[Excel Connection Manager 1]"
+                  description="COZYROC Excel Connection Manager"
+                  name="EXCEL+" />
+              </connections>
+              <inputs>
+                <input
+                  refId="Package\Load Excel file\Excel Destination Plus.Inputs[Excel Destination Plus Input]"
+                  errorOrTruncationOperation="Insert"
+                  errorRowDisposition="FailComponent"
+                  hasSideEffects="true"
+                  name="Excel Destination Plus Input">
+                  <inputColumns>
+                    <inputColumn
+                      refId="Package\Load Excel file\Excel Destination Plus.Inputs[Excel Destination Plus Input].Columns[ProgramName]"
+                      cachedDataType="wstr"
+                      cachedLength="20"
+                      cachedName="ProgramName"
+                      lineageId="Package\Load Excel file\OLE DB Source.Outputs[OLE DB Source Output].Columns[ProgramName]" />
+                    <inputColumn
+                      refId="Package\Load Excel file\Excel Destination Plus.Inputs[Excel Destination Plus Input].Columns[agentname]"
+                      cachedDataType="wstr"
+                      cachedLength="50"
+                      cachedName="agentname"
+                      lineageId="Package\Load Excel file\OLE DB Source.Outputs[OLE DB Source Output].Columns[agentname]" />
+                    <inputColumn
+                      refId="Package\Load Excel file\Excel Destination Plus.Inputs[Excel Destination Plus Input].Columns[salesmanager]"
+                      cachedDataType="wstr"
+                      cachedLength="50"
+                      cachedName="salesmanager"
+                      lineageId="Package\Load Excel file\OLE DB Source.Outputs[OLE DB Source Output].Columns[salesmanager]" />
+                    <inputColumn
+                      refId="Package\Load Excel file\Excel Destination Plus.Inputs[Excel Destination Plus Input].Columns[ImportDate]"
+                      cachedCodepage="1252"
+                      cachedDataType="str"
+                      cachedLength="50"
+                      cachedName="ImportDate"
+                      lineageId="Package\Load Excel file\OLE DB Source.Outputs[OLE DB Source Output].Columns[ImportDate]" />
+                    <inputColumn
+                      refId="Package\Load Excel file\Excel Destination Plus.Inputs[Excel Destination Plus Input].Columns[Enrollment_Package]"
+                      cachedCodepage="1252"
+                      cachedDataType="str"
+                      cachedLength="50"
+                      cachedName="Enrollment_Package"
+                      lineageId="Package\Load Excel file\OLE DB Source.Outputs[OLE DB Source Output].Columns[Enrollment_Package]" />
+                    <inputColumn
+                      refId="Package\Load Excel file\Excel Destination Plus.Inputs[Excel Destination Plus Input].Columns[IsBeyondContract]"
+                      cachedCodepage="1252"
+                      cachedDataType="str"
+                      cachedLength="50"
+                      cachedName="IsBeyondContract"
+                      lineageId="Package\Load Excel file\OLE DB Source.Outputs[OLE DB Source Output].Columns[IsBeyondContract]" />
+                    <inputColumn
+                      refId="Package\Load Excel file\Excel Destination Plus.Inputs[Excel Destination Plus Input].Columns[ATC_POA]"
+                      cachedCodepage="1252"
+                      cachedDataType="str"
+                      cachedLength="50"
+                      cachedName="ATC_POA"
+                      lineageId="Package\Load Excel file\OLE DB Source.Outputs[OLE DB Source Output].Columns[ATC_POA]" />
+                    <inputColumn
+                      refId="Package\Load Excel file\Excel Destination Plus.Inputs[Excel Destination Plus Input].Columns[Credit_Pull_Auth]"
+                      cachedCodepage="1252"
+                      cachedDataType="str"
+                      cachedLength="50"
+                      cachedName="Credit_Pull_Auth"
+                      lineageId="Package\Load Excel file\OLE DB Source.Outputs[OLE DB Source Output].Columns[Credit_Pull_Auth]" />
+                    <inputColumn
+                      refId="Package\Load Excel file\Excel Destination Plus.Inputs[Excel Destination Plus Input].Columns[SPAA]"
+                      cachedCodepage="1252"
+                      cachedDataType="str"
+                      cachedLength="50"
+                      cachedName="SPAA"
+                      lineageId="Package\Load Excel file\OLE DB Source.Outputs[OLE DB Source Output].Columns[SPAA]" />
+                    <inputColumn
+                      refId="Package\Load Excel file\Excel Destination Plus.Inputs[Excel Destination Plus Input].Columns[Docusign_Certificate]"
+                      cachedCodepage="1252"
+                      cachedDataType="str"
+                      cachedLength="50"
+                      cachedName="Docusign_Certificate"
+                      lineageId="Package\Load Excel file\OLE DB Source.Outputs[OLE DB Source Output].Columns[Docusign_Certificate]" />
+                  </inputColumns>
+                  <externalMetadataColumns />
+                </input>
+              </inputs>
+              <outputs>
+                <output
+                  refId="Package\Load Excel file\Excel Destination Plus.Outputs[Excel Destination Plus Error Output]"
+                  exclusionGroup="1"
+                  isErrorOut="true"
+                  name="Excel Destination Plus Error Output"
+                  synchronousInputId="Package\Load Excel file\Excel Destination Plus.Inputs[Excel Destination Plus Input]">
+                  <outputColumns>
+                    <outputColumn
+                      refId="Package\Load Excel file\Excel Destination Plus.Outputs[Excel Destination Plus Error Output].Columns[ErrorCode]"
+                      dataType="i4"
+                      lineageId="Package\Load Excel file\Excel Destination Plus.Outputs[Excel Destination Plus Error Output].Columns[ErrorCode]"
+                      name="ErrorCode"
+                      specialFlags="1" />
+                    <outputColumn
+                      refId="Package\Load Excel file\Excel Destination Plus.Outputs[Excel Destination Plus Error Output].Columns[ErrorColumn]"
+                      dataType="i4"
+                      lineageId="Package\Load Excel file\Excel Destination Plus.Outputs[Excel Destination Plus Error Output].Columns[ErrorColumn]"
+                      name="ErrorColumn"
+                      specialFlags="2" />
+                  </outputColumns>
+                  <externalMetadataColumns />
+                </output>
+              </outputs>
+            </component>
+            <component
+              refId="Package\Load Excel file\OLE DB Source"
+              componentClassID="Microsoft.OLEDBSource"
+              contactInfo="OLE DB Source;Microsoft Corporation; Microsoft SQL Server; (C) Microsoft Corporation; All Rights Reserved; http://www.microsoft.com/sql/support;7"
+              description="OLE DB Source"
+              name="OLE DB Source"
+              usesDispositions="true"
+              version="7">
+              <properties>
+                <property
+                  dataType="System.Int32"
+                  description="The number of seconds before a command times out.  A value of 0 indicates an infinite time-out."
+                  name="CommandTimeout">0</property>
+                <property
+                  dataType="System.String"
+                  description="Specifies the name of the database object used to open a rowset."
+                  name="OpenRowset"></property>
+                <property
+                  dataType="System.String"
+                  description="Specifies the variable that contains the name of the database object used to open a rowset."
+                  name="OpenRowsetVariable"></property>
+                <property
+                  dataType="System.String"
+                  description="The SQL command to be executed."
+                  name="SqlCommand"
+                  UITypeEditor="Microsoft.DataTransformationServices.Controls.ModalMultilineStringEditor, Microsoft.DataTransformationServices.Controls, Version=15.0.0.0, Culture=neutral, PublicKeyToken=89845dcd8080cc91">SELECT
+p.clietnid as ProgramName
+, p.agentname
+, p.salesmanager
+, m.ImportDate
+, m.Enrollment_Package
+, m.IsBeyondContract
+, m.ATC_POA
+, m.Credit_Pull_Auth
+, m.SPAA
+, m.Docusign_Certificate
+FROM
+stg_AllPrograms p
+INNER JOIN stg_ClearOne_MissingData m on p.clietnid = m.ProgramID</property>
+                <property
+                  dataType="System.String"
+                  description="The variable that contains the SQL command to be executed."
+                  name="SqlCommandVariable"></property>
+                <property
+                  dataType="System.Int32"
+                  description="Specifies the column code page to use when code page information is unavailable from the data source."
+                  name="DefaultCodePage">1252</property>
+                <property
+                  dataType="System.Boolean"
+                  description="Forces the use of the DefaultCodePage property value when describing character data."
+                  name="AlwaysUseDefaultCodePage">false</property>
+                <property
+                  dataType="System.Int32"
+                  description="Specifies the mode used to access the database."
+                  name="AccessMode"
+                  typeConverter="AccessMode">2</property>
+                <property
+                  dataType="System.String"
+                  description="The mappings between the parameters in the SQL command and variables."
+                  name="ParameterMapping"></property>
+              </properties>
+              <connections>
+                <connection
+                  refId="Package\Load Excel file\OLE DB Source.Connections[OleDbConnection]"
+                  connectionManagerID="Package.ConnectionManagers[HOU-IT-RSTEWART\SQL2017.BF_Redshift_Staging]"
+                  connectionManagerRefId="Package.ConnectionManagers[HOU-IT-RSTEWART\SQL2017.BF_Redshift_Staging]"
+                  description="The OLE DB runtime connection used to access the database."
+                  name="OleDbConnection" />
+              </connections>
+              <outputs>
+                <output
+                  refId="Package\Load Excel file\OLE DB Source.Outputs[OLE DB Source Output]"
+                  name="OLE DB Source Output">
+                  <outputColumns>
+                    <outputColumn
+                      refId="Package\Load Excel file\OLE DB Source.Outputs[OLE DB Source Output].Columns[ProgramName]"
+                      dataType="wstr"
+                      errorOrTruncationOperation="Conversion"
+                      errorRowDisposition="FailComponent"
+                      externalMetadataColumnId="Package\Load Excel file\OLE DB Source.Outputs[OLE DB Source Output].ExternalColumns[ProgramName]"
+                      length="20"
+                      lineageId="Package\Load Excel file\OLE DB Source.Outputs[OLE DB Source Output].Columns[ProgramName]"
+                      name="ProgramName"
+                      truncationRowDisposition="FailComponent" />
+                    <outputColumn
+                      refId="Package\Load Excel file\OLE DB Source.Outputs[OLE DB Source Output].Columns[agentname]"
+                      dataType="wstr"
+                      errorOrTruncationOperation="Conversion"
+                      errorRowDisposition="FailComponent"
+                      externalMetadataColumnId="Package\Load Excel file\OLE DB Source.Outputs[OLE DB Source Output].ExternalColumns[agentname]"
+                      length="50"
+                      lineageId="Package\Load Excel file\OLE DB Source.Outputs[OLE DB Source Output].Columns[agentname]"
+                      name="agentname"
+                      truncationRowDisposition="FailComponent" />
+                    <outputColumn
+                      refId="Package\Load Excel file\OLE DB Source.Outputs[OLE DB Source Output].Columns[salesmanager]"
+                      dataType="wstr"
+                      errorOrTruncationOperation="Conversion"
+                      errorRowDisposition="FailComponent"
+                      externalMetadataColumnId="Package\Load Excel file\OLE DB Source.Outputs[OLE DB Source Output].ExternalColumns[salesmanager]"
+                      length="50"
+                      lineageId="Package\Load Excel file\OLE DB Source.Outputs[OLE DB Source Output].Columns[salesmanager]"
+                      name="salesmanager"
+                      truncationRowDisposition="FailComponent" />
+                    <outputColumn
+                      refId="Package\Load Excel file\OLE DB Source.Outputs[OLE DB Source Output].Columns[ImportDate]"
+                      codePage="1252"
+                      dataType="str"
+                      errorOrTruncationOperation="Conversion"
+                      errorRowDisposition="FailComponent"
+                      externalMetadataColumnId="Package\Load Excel file\OLE DB Source.Outputs[OLE DB Source Output].ExternalColumns[ImportDate]"
+                      length="50"
+                      lineageId="Package\Load Excel file\OLE DB Source.Outputs[OLE DB Source Output].Columns[ImportDate]"
+                      name="ImportDate"
+                      truncationRowDisposition="FailComponent" />
+                    <outputColumn
+                      refId="Package\Load Excel file\OLE DB Source.Outputs[OLE DB Source Output].Columns[Enrollment_Package]"
+                      codePage="1252"
+                      dataType="str"
+                      errorOrTruncationOperation="Conversion"
+                      errorRowDisposition="FailComponent"
+                      externalMetadataColumnId="Package\Load Excel file\OLE DB Source.Outputs[OLE DB Source Output].ExternalColumns[Enrollment_Package]"
+                      length="50"
+                      lineageId="Package\Load Excel file\OLE DB Source.Outputs[OLE DB Source Output].Columns[Enrollment_Package]"
+                      name="Enrollment_Package"
+                      truncationRowDisposition="FailComponent" />
+                    <outputColumn
+                      refId="Package\Load Excel file\OLE DB Source.Outputs[OLE DB Source Output].Columns[IsBeyondContract]"
+                      codePage="1252"
+                      dataType="str"
+                      errorOrTruncationOperation="Conversion"
+                      errorRowDisposition="FailComponent"
+                      externalMetadataColumnId="Package\Load Excel file\OLE DB Source.Outputs[OLE DB Source Output].ExternalColumns[IsBeyondContract]"
+                      length="50"
+                      lineageId="Package\Load Excel file\OLE DB Source.Outputs[OLE DB Source Output].Columns[IsBeyondContract]"
+                      name="IsBeyondContract"
+                      truncationRowDisposition="FailComponent" />
+                    <outputColumn
+                      refId="Package\Load Excel file\OLE DB Source.Outputs[OLE DB Source Output].Columns[ATC_POA]"
+                      codePage="1252"
+                      dataType="str"
+                      errorOrTruncationOperation="Conversion"
+                      errorRowDisposition="FailComponent"
+                      externalMetadataColumnId="Package\Load Excel file\OLE DB Source.Outputs[OLE DB Source Output].ExternalColumns[ATC_POA]"
+                      length="50"
+                      lineageId="Package\Load Excel file\OLE DB Source.Outputs[OLE DB Source Output].Columns[ATC_POA]"
+                      name="ATC_POA"
+                      truncationRowDisposition="FailComponent" />
+                    <outputColumn
+                      refId="Package\Load Excel file\OLE DB Source.Outputs[OLE DB Source Output].Columns[Credit_Pull_Auth]"
+                      codePage="1252"
+                      dataType="str"
+                      errorOrTruncationOperation="Conversion"
+                      errorRowDisposition="FailComponent"
+                      externalMetadataColumnId="Package\Load Excel file\OLE DB Source.Outputs[OLE DB Source Output].ExternalColumns[Credit_Pull_Auth]"
+                      length="50"
+                      lineageId="Package\Load Excel file\OLE DB Source.Outputs[OLE DB Source Output].Columns[Credit_Pull_Auth]"
+                      name="Credit_Pull_Auth"
+                      truncationRowDisposition="FailComponent" />
+                    <outputColumn
+                      refId="Package\Load Excel file\OLE DB Source.Outputs[OLE DB Source Output].Columns[SPAA]"
+                      codePage="1252"
+                      dataType="str"
+                      errorOrTruncationOperation="Conversion"
+                      errorRowDisposition="FailComponent"
+                      externalMetadataColumnId="Package\Load Excel file\OLE DB Source.Outputs[OLE DB Source Output].ExternalColumns[SPAA]"
+                      length="50"
+                      lineageId="Package\Load Excel file\OLE DB Source.Outputs[OLE DB Source Output].Columns[SPAA]"
+                      name="SPAA"
+                      truncationRowDisposition="FailComponent" />
+                    <outputColumn
+                      refId="Package\Load Excel file\OLE DB Source.Outputs[OLE DB Source Output].Columns[Docusign_Certificate]"
+                      codePage="1252"
+                      dataType="str"
+                      errorOrTruncationOperation="Conversion"
+                      errorRowDisposition="FailComponent"
+                      externalMetadataColumnId="Package\Load Excel file\OLE DB Source.Outputs[OLE DB Source Output].ExternalColumns[Docusign_Certificate]"
+                      length="50"
+                      lineageId="Package\Load Excel file\OLE DB Source.Outputs[OLE DB Source Output].Columns[Docusign_Certificate]"
+                      name="Docusign_Certificate"
+                      truncationRowDisposition="FailComponent" />
+                  </outputColumns>
+                  <externalMetadataColumns
+                    isUsed="True">
+                    <externalMetadataColumn
+                      refId="Package\Load Excel file\OLE DB Source.Outputs[OLE DB Source Output].ExternalColumns[ProgramName]"
+                      dataType="wstr"
+                      length="20"
+                      name="ProgramName" />
+                    <externalMetadataColumn
+                      refId="Package\Load Excel file\OLE DB Source.Outputs[OLE DB Source Output].ExternalColumns[agentname]"
+                      dataType="wstr"
+                      length="50"
+                      name="agentname" />
+                    <externalMetadataColumn
+                      refId="Package\Load Excel file\OLE DB Source.Outputs[OLE DB Source Output].ExternalColumns[salesmanager]"
+                      dataType="wstr"
+                      length="50"
+                      name="salesmanager" />
+                    <externalMetadataColumn
+                      refId="Package\Load Excel file\OLE DB Source.Outputs[OLE DB Source Output].ExternalColumns[ImportDate]"
+                      codePage="1252"
+                      dataType="str"
+                      length="50"
+                      name="ImportDate" />
+                    <externalMetadataColumn
+                      refId="Package\Load Excel file\OLE DB Source.Outputs[OLE DB Source Output].ExternalColumns[Enrollment_Package]"
+                      codePage="1252"
+                      dataType="str"
+                      length="50"
+                      name="Enrollment_Package" />
+                    <externalMetadataColumn
+                      refId="Package\Load Excel file\OLE DB Source.Outputs[OLE DB Source Output].ExternalColumns[IsBeyondContract]"
+                      codePage="1252"
+                      dataType="str"
+                      length="50"
+                      name="IsBeyondContract" />
+                    <externalMetadataColumn
+                      refId="Package\Load Excel file\OLE DB Source.Outputs[OLE DB Source Output].ExternalColumns[ATC_POA]"
+                      codePage="1252"
+                      dataType="str"
+                      length="50"
+                      name="ATC_POA" />
+                    <externalMetadataColumn
+                      refId="Package\Load Excel file\OLE DB Source.Outputs[OLE DB Source Output].ExternalColumns[Credit_Pull_Auth]"
+                      codePage="1252"
+                      dataType="str"
+                      length="50"
+                      name="Credit_Pull_Auth" />
+                    <externalMetadataColumn
+                      refId="Package\Load Excel file\OLE DB Source.Outputs[OLE DB Source Output].ExternalColumns[SPAA]"
+                      codePage="1252"
+                      dataType="str"
+                      length="50"
+                      name="SPAA" />
+                    <externalMetadataColumn
+                      refId="Package\Load Excel file\OLE DB Source.Outputs[OLE DB Source Output].ExternalColumns[Docusign_Certificate]"
+                      codePage="1252"
+                      dataType="str"
+                      length="50"
+                      name="Docusign_Certificate" />
+                  </externalMetadataColumns>
+                </output>
+                <output
+                  refId="Package\Load Excel file\OLE DB Source.Outputs[OLE DB Source Error Output]"
+                  isErrorOut="true"
+                  name="OLE DB Source Error Output">
+                  <outputColumns>
+                    <outputColumn
+                      refId="Package\Load Excel file\OLE DB Source.Outputs[OLE DB Source Error Output].Columns[ProgramName]"
+                      dataType="wstr"
+                      length="20"
+                      lineageId="Package\Load Excel file\OLE DB Source.Outputs[OLE DB Source Error Output].Columns[ProgramName]"
+                      name="ProgramName" />
+                    <outputColumn
+                      refId="Package\Load Excel file\OLE DB Source.Outputs[OLE DB Source Error Output].Columns[agentname]"
+                      dataType="wstr"
+                      length="50"
+                      lineageId="Package\Load Excel file\OLE DB Source.Outputs[OLE DB Source Error Output].Columns[agentname]"
+                      name="agentname" />
+                    <outputColumn
+                      refId="Package\Load Excel file\OLE DB Source.Outputs[OLE DB Source Error Output].Columns[salesmanager]"
+                      dataType="wstr"
+                      length="50"
+                      lineageId="Package\Load Excel file\OLE DB Source.Outputs[OLE DB Source Error Output].Columns[salesmanager]"
+                      name="salesmanager" />
+                    <outputColumn
+                      refId="Package\Load Excel file\OLE DB Source.Outputs[OLE DB Source Error Output].Columns[ImportDate]"
+                      codePage="1252"
+                      dataType="str"
+                      length="50"
+                      lineageId="Package\Load Excel file\OLE DB Source.Outputs[OLE DB Source Error Output].Columns[ImportDate]"
+                      name="ImportDate" />
+                    <outputColumn
+                      refId="Package\Load Excel file\OLE DB Source.Outputs[OLE DB Source Error Output].Columns[Enrollment_Package]"
+                      codePage="1252"
+                      dataType="str"
+                      length="50"
+                      lineageId="Package\Load Excel file\OLE DB Source.Outputs[OLE DB Source Error Output].Columns[Enrollment_Package]"
+                      name="Enrollment_Package" />
+                    <outputColumn
+                      refId="Package\Load Excel file\OLE DB Source.Outputs[OLE DB Source Error Output].Columns[IsBeyondContract]"
+                      codePage="1252"
+                      dataType="str"
+                      length="50"
+                      lineageId="Package\Load Excel file\OLE DB Source.Outputs[OLE DB Source Error Output].Columns[IsBeyondContract]"
+                      name="IsBeyondContract" />
+                    <outputColumn
+                      refId="Package\Load Excel file\OLE DB Source.Outputs[OLE DB Source Error Output].Columns[ATC_POA]"
+                      codePage="1252"
+                      dataType="str"
+                      length="50"
+                      lineageId="Package\Load Excel file\OLE DB Source.Outputs[OLE DB Source Error Output].Columns[ATC_POA]"
+                      name="ATC_POA" />
+                    <outputColumn
+                      refId="Package\Load Excel file\OLE DB Source.Outputs[OLE DB Source Error Output].Columns[Credit_Pull_Auth]"
+                      codePage="1252"
+                      dataType="str"
+                      length="50"
+                      lineageId="Package\Load Excel file\OLE DB Source.Outputs[OLE DB Source Error Output].Columns[Credit_Pull_Auth]"
+                      name="Credit_Pull_Auth" />
+                    <outputColumn
+                      refId="Package\Load Excel file\OLE DB Source.Outputs[OLE DB Source Error Output].Columns[SPAA]"
+                      codePage="1252"
+                      dataType="str"
+                      length="50"
+                      lineageId="Package\Load Excel file\OLE DB Source.Outputs[OLE DB Source Error Output].Columns[SPAA]"
+                      name="SPAA" />
+                    <outputColumn
+                      refId="Package\Load Excel file\OLE DB Source.Outputs[OLE DB Source Error Output].Columns[Docusign_Certificate]"
+                      codePage="1252"
+                      dataType="str"
+                      length="50"
+                      lineageId="Package\Load Excel file\OLE DB Source.Outputs[OLE DB Source Error Output].Columns[Docusign_Certificate]"
+                      name="Docusign_Certificate" />
+                    <outputColumn
+                      refId="Package\Load Excel file\OLE DB Source.Outputs[OLE DB Source Error Output].Columns[ErrorCode]"
+                      dataType="i4"
+                      lineageId="Package\Load Excel file\OLE DB Source.Outputs[OLE DB Source Error Output].Columns[ErrorCode]"
+                      name="ErrorCode"
+                      specialFlags="1" />
+                    <outputColumn
+                      refId="Package\Load Excel file\OLE DB Source.Outputs[OLE DB Source Error Output].Columns[ErrorColumn]"
+                      dataType="i4"
+                      lineageId="Package\Load Excel file\OLE DB Source.Outputs[OLE DB Source Error Output].Columns[ErrorColumn]"
+                      name="ErrorColumn"
+                      specialFlags="2" />
+                  </outputColumns>
+                  <externalMetadataColumns />
+                </output>
+              </outputs>
+            </component>
+          </components>
+          <paths>
+            <path
+              refId="Package\Load Excel file.Paths[OLE DB Source Output]"
+              endId="Package\Load Excel file\Excel Destination Plus.Inputs[Excel Destination Plus Input]"
+              name="OLE DB Source Output"
+              startId="Package\Load Excel file\OLE DB Source.Outputs[OLE DB Source Output]" />
+          </paths>
+        </pipeline>
+      </DTS:ObjectData>
+    </DTS:Executable>
+    <DTS:Executable
+      DTS:refId="Package\Load New Missing Document List"
+      DTS:CreationName="Microsoft.Pipeline"
+      DTS:Description="Data Flow Task"
+      DTS:DTSID="{367FD6B2-0C4B-4EB1-8C36-4667BA5358FA}"
+      DTS:ExecutableType="Microsoft.Pipeline"
+      DTS:LocaleID="-1"
+      DTS:ObjectName="Load New Missing Document List"
+      DTS:TaskContact="Performs high-performance data extraction, transformation and loading;Microsoft Corporation; Microsoft SQL Server; (C) Microsoft Corporation; All Rights Reserved;http://www.microsoft.com/sql/support/default.asp;1">
+      <DTS:Variables />
+      <DTS:ObjectData>
+        <pipeline
+          version="1">
+          <components>
+            <component
+              refId="Package\Load New Missing Document List\Data Conversion"
+              componentClassID="Microsoft.DataConvert"
+              contactInfo="Data Conversion;Microsoft Corporation; Microsoft SQL Server; (C) Microsoft Corporation; All Rights Reserved; http://www.microsoft.com/sql/support;0"
+              description="Data Conversion"
+              name="Data Conversion"
+              usesDispositions="true">
+              <inputs>
+                <input
+                  refId="Package\Load New Missing Document List\Data Conversion.Inputs[Data Conversion Input]"
+                  name="Data Conversion Input">
+                  <inputColumns>
+                    <inputColumn
+                      refId="Package\Load New Missing Document List\Data Conversion.Inputs[Data Conversion Input].Columns[ProgramID]"
+                      cachedDataType="wstr"
+                      cachedLength="250"
+                      cachedName="ProgramID"
+                      lineageId="Package\Load New Missing Document List\Excel Source Plus.Outputs[Excel Source Plus Output].Columns[ProgramID]" />
+                    <inputColumn
+                      refId="Package\Load New Missing Document List\Data Conversion.Inputs[Data Conversion Input].Columns[ImportDate]"
+                      cachedDataType="wstr"
+                      cachedLength="250"
+                      cachedName="ImportDate"
+                      lineageId="Package\Load New Missing Document List\Excel Source Plus.Outputs[Excel Source Plus Output].Columns[ImportDate]" />
+                    <inputColumn
+                      refId="Package\Load New Missing Document List\Data Conversion.Inputs[Data Conversion Input].Columns[Enrollment_Package]"
+                      cachedDataType="wstr"
+                      cachedLength="250"
+                      cachedName="Enrollment_Package"
+                      lineageId="Package\Load New Missing Document List\Excel Source Plus.Outputs[Excel Source Plus Output].Columns[Enrollment_Package]" />
+                    <inputColumn
+                      refId="Package\Load New Missing Document List\Data Conversion.Inputs[Data Conversion Input].Columns[IsBeyondContract]"
+                      cachedDataType="wstr"
+                      cachedLength="250"
+                      cachedName="IsBeyondContract"
+                      lineageId="Package\Load New Missing Document List\Excel Source Plus.Outputs[Excel Source Plus Output].Columns[IsBeyondContract]" />
+                    <inputColumn
+                      refId="Package\Load New Missing Document List\Data Conversion.Inputs[Data Conversion Input].Columns[ATC_POA]"
+                      cachedDataType="wstr"
+                      cachedLength="250"
+                      cachedName="ATC_POA"
+                      lineageId="Package\Load New Missing Document List\Excel Source Plus.Outputs[Excel Source Plus Output].Columns[ATC_POA]" />
+                    <inputColumn
+                      refId="Package\Load New Missing Document List\Data Conversion.Inputs[Data Conversion Input].Columns[Credit_Pull_Auth]"
+                      cachedDataType="wstr"
+                      cachedLength="250"
+                      cachedName="Credit_Pull_Auth"
+                      lineageId="Package\Load New Missing Document List\Excel Source Plus.Outputs[Excel Source Plus Output].Columns[Credit_Pull_Auth]" />
+                    <inputColumn
+                      refId="Package\Load New Missing Document List\Data Conversion.Inputs[Data Conversion Input].Columns[SPAA]"
+                      cachedDataType="wstr"
+                      cachedLength="250"
+                      cachedName="SPAA"
+                      lineageId="Package\Load New Missing Document List\Excel Source Plus.Outputs[Excel Source Plus Output].Columns[SPAA]" />
+                    <inputColumn
+                      refId="Package\Load New Missing Document List\Data Conversion.Inputs[Data Conversion Input].Columns[Docusign_Certificate]"
+                      cachedDataType="wstr"
+                      cachedLength="250"
+                      cachedName="Docusign_Certificate"
+                      lineageId="Package\Load New Missing Document List\Excel Source Plus.Outputs[Excel Source Plus Output].Columns[Docusign_Certificate]" />
+                  </inputColumns>
+                  <externalMetadataColumns />
+                </input>
+              </inputs>
+              <outputs>
+                <output
+                  refId="Package\Load New Missing Document List\Data Conversion.Outputs[Data Conversion Output]"
+                  exclusionGroup="1"
+                  name="Data Conversion Output"
+                  synchronousInputId="Package\Load New Missing Document List\Data Conversion.Inputs[Data Conversion Input]">
+                  <outputColumns>
+                    <outputColumn
+                      refId="Package\Load New Missing Document List\Data Conversion.Outputs[Data Conversion Output].Columns[Copy of ProgramID]"
+                      codePage="1252"
+                      dataType="str"
+                      errorOrTruncationOperation="Conversion"
+                      errorRowDisposition="FailComponent"
+                      length="20"
+                      lineageId="Package\Load New Missing Document List\Data Conversion.Outputs[Data Conversion Output].Columns[Copy of ProgramID]"
+                      name="Copy of ProgramID"
+                      truncationRowDisposition="FailComponent">
+                      <properties>
+                        <property
+                          containsID="true"
+                          dataType="System.Int32"
+                          description="Specifies the input column used as the source of data for the conversion."
+                          name="SourceInputColumnLineageID">#{Package\Load New Missing Document List\Excel Source Plus.Outputs[Excel Source Plus Output].Columns[ProgramID]}</property>
+                        <property
+                          dataType="System.Boolean"
+                          description="Indicates whether the column uses the faster, locale-neutral parsing routines."
+                          name="FastParse">false</property>
+                      </properties>
+                    </outputColumn>
+                    <outputColumn
+                      refId="Package\Load New Missing Document List\Data Conversion.Outputs[Data Conversion Output].Columns[Copy of ImportDate]"
+                      dataType="date"
+                      errorOrTruncationOperation="Conversion"
+                      errorRowDisposition="FailComponent"
+                      lineageId="Package\Load New Missing Document List\Data Conversion.Outputs[Data Conversion Output].Columns[Copy of ImportDate]"
+                      name="Copy of ImportDate"
+                      truncationRowDisposition="FailComponent">
+                      <properties>
+                        <property
+                          containsID="true"
+                          dataType="System.Int32"
+                          description="Specifies the input column used as the source of data for the conversion."
+                          name="SourceInputColumnLineageID">#{Package\Load New Missing Document List\Excel Source Plus.Outputs[Excel Source Plus Output].Columns[ImportDate]}</property>
+                        <property
+                          dataType="System.Boolean"
+                          description="Indicates whether the column uses the faster, locale-neutral parsing routines."
+                          name="FastParse">false</property>
+                      </properties>
+                    </outputColumn>
+                    <outputColumn
+                      refId="Package\Load New Missing Document List\Data Conversion.Outputs[Data Conversion Output].Columns[Copy of Enrollment_Package]"
+                      dataType="bool"
+                      errorOrTruncationOperation="Conversion"
+                      errorRowDisposition="FailComponent"
+                      lineageId="Package\Load New Missing Document List\Data Conversion.Outputs[Data Conversion Output].Columns[Copy of Enrollment_Package]"
+                      name="Copy of Enrollment_Package"
+                      truncationRowDisposition="FailComponent">
+                      <properties>
+                        <property
+                          containsID="true"
+                          dataType="System.Int32"
+                          description="Specifies the input column used as the source of data for the conversion."
+                          name="SourceInputColumnLineageID">#{Package\Load New Missing Document List\Excel Source Plus.Outputs[Excel Source Plus Output].Columns[Enrollment_Package]}</property>
+                        <property
+                          dataType="System.Boolean"
+                          description="Indicates whether the column uses the faster, locale-neutral parsing routines."
+                          name="FastParse">false</property>
+                      </properties>
+                    </outputColumn>
+                    <outputColumn
+                      refId="Package\Load New Missing Document List\Data Conversion.Outputs[Data Conversion Output].Columns[Copy of IsBeyondContract]"
+                      dataType="bool"
+                      errorOrTruncationOperation="Conversion"
+                      errorRowDisposition="FailComponent"
+                      lineageId="Package\Load New Missing Document List\Data Conversion.Outputs[Data Conversion Output].Columns[Copy of IsBeyondContract]"
+                      name="Copy of IsBeyondContract"
+                      truncationRowDisposition="FailComponent">
+                      <properties>
+                        <property
+                          containsID="true"
+                          dataType="System.Int32"
+                          description="Specifies the input column used as the source of data for the conversion."
+                          name="SourceInputColumnLineageID">#{Package\Load New Missing Document List\Excel Source Plus.Outputs[Excel Source Plus Output].Columns[IsBeyondContract]}</property>
+                        <property
+                          dataType="System.Boolean"
+                          description="Indicates whether the column uses the faster, locale-neutral parsing routines."
+                          name="FastParse">false</property>
+                      </properties>
+                    </outputColumn>
+                    <outputColumn
+                      refId="Package\Load New Missing Document List\Data Conversion.Outputs[Data Conversion Output].Columns[Copy of ATC_POA]"
+                      dataType="bool"
+                      errorOrTruncationOperation="Conversion"
+                      errorRowDisposition="FailComponent"
+                      lineageId="Package\Load New Missing Document List\Data Conversion.Outputs[Data Conversion Output].Columns[Copy of ATC_POA]"
+                      name="Copy of ATC_POA"
+                      truncationRowDisposition="FailComponent">
+                      <properties>
+                        <property
+                          containsID="true"
+                          dataType="System.Int32"
+                          description="Specifies the input column used as the source of data for the conversion."
+                          name="SourceInputColumnLineageID">#{Package\Load New Missing Document List\Excel Source Plus.Outputs[Excel Source Plus Output].Columns[ATC_POA]}</property>
+                        <property
+                          dataType="System.Boolean"
+                          description="Indicates whether the column uses the faster, locale-neutral parsing routines."
+                          name="FastParse">false</property>
+                      </properties>
+                    </outputColumn>
+                    <outputColumn
+                      refId="Package\Load New Missing Document List\Data Conversion.Outputs[Data Conversion Output].Columns[Copy of Credit_Pull_Auth]"
+                      dataType="bool"
+                      errorOrTruncationOperation="Conversion"
+                      errorRowDisposition="FailComponent"
+                      lineageId="Package\Load New Missing Document List\Data Conversion.Outputs[Data Conversion Output].Columns[Copy of Credit_Pull_Auth]"
+                      name="Copy of Credit_Pull_Auth"
+                      truncationRowDisposition="FailComponent">
+                      <properties>
+                        <property
+                          containsID="true"
+                          dataType="System.Int32"
+                          description="Specifies the input column used as the source of data for the conversion."
+                          name="SourceInputColumnLineageID">#{Package\Load New Missing Document List\Excel Source Plus.Outputs[Excel Source Plus Output].Columns[Credit_Pull_Auth]}</property>
+                        <property
+                          dataType="System.Boolean"
+                          description="Indicates whether the column uses the faster, locale-neutral parsing routines."
+                          name="FastParse">false</property>
+                      </properties>
+                    </outputColumn>
+                    <outputColumn
+                      refId="Package\Load New Missing Document List\Data Conversion.Outputs[Data Conversion Output].Columns[Copy of SPAA]"
+                      dataType="bool"
+                      errorOrTruncationOperation="Conversion"
+                      errorRowDisposition="FailComponent"
+                      lineageId="Package\Load New Missing Document List\Data Conversion.Outputs[Data Conversion Output].Columns[Copy of SPAA]"
+                      name="Copy of SPAA"
+                      truncationRowDisposition="FailComponent">
+                      <properties>
+                        <property
+                          containsID="true"
+                          dataType="System.Int32"
+                          description="Specifies the input column used as the source of data for the conversion."
+                          name="SourceInputColumnLineageID">#{Package\Load New Missing Document List\Excel Source Plus.Outputs[Excel Source Plus Output].Columns[SPAA]}</property>
+                        <property
+                          dataType="System.Boolean"
+                          description="Indicates whether the column uses the faster, locale-neutral parsing routines."
+                          name="FastParse">false</property>
+                      </properties>
+                    </outputColumn>
+                    <outputColumn
+                      refId="Package\Load New Missing Document List\Data Conversion.Outputs[Data Conversion Output].Columns[Copy of Docusign_Certificate]"
+                      dataType="bool"
+                      errorOrTruncationOperation="Conversion"
+                      errorRowDisposition="FailComponent"
+                      lineageId="Package\Load New Missing Document List\Data Conversion.Outputs[Data Conversion Output].Columns[Copy of Docusign_Certificate]"
+                      name="Copy of Docusign_Certificate"
+                      truncationRowDisposition="FailComponent">
+                      <properties>
+                        <property
+                          containsID="true"
+                          dataType="System.Int32"
+                          description="Specifies the input column used as the source of data for the conversion."
+                          name="SourceInputColumnLineageID">#{Package\Load New Missing Document List\Excel Source Plus.Outputs[Excel Source Plus Output].Columns[Docusign_Certificate]}</property>
+                        <property
+                          dataType="System.Boolean"
+                          description="Indicates whether the column uses the faster, locale-neutral parsing routines."
+                          name="FastParse">false</property>
+                      </properties>
+                    </outputColumn>
+                  </outputColumns>
+                  <externalMetadataColumns />
+                </output>
+                <output
+                  refId="Package\Load New Missing Document List\Data Conversion.Outputs[Data Conversion Error Output]"
+                  exclusionGroup="1"
+                  isErrorOut="true"
+                  name="Data Conversion Error Output"
+                  synchronousInputId="Package\Load New Missing Document List\Data Conversion.Inputs[Data Conversion Input]">
+                  <outputColumns>
+                    <outputColumn
+                      refId="Package\Load New Missing Document List\Data Conversion.Outputs[Data Conversion Error Output].Columns[ErrorCode]"
+                      dataType="i4"
+                      lineageId="Package\Load New Missing Document List\Data Conversion.Outputs[Data Conversion Error Output].Columns[ErrorCode]"
+                      name="ErrorCode"
+                      specialFlags="1" />
+                    <outputColumn
+                      refId="Package\Load New Missing Document List\Data Conversion.Outputs[Data Conversion Error Output].Columns[ErrorColumn]"
+                      dataType="i4"
+                      lineageId="Package\Load New Missing Document List\Data Conversion.Outputs[Data Conversion Error Output].Columns[ErrorColumn]"
+                      name="ErrorColumn"
+                      specialFlags="2" />
+                  </outputColumns>
+                  <externalMetadataColumns />
+                </output>
+              </outputs>
+            </component>
+            <component
+              refId="Package\Load New Missing Document List\Excel Source Plus"
+              componentClassID="Microsoft.ManagedComponentHost"
+              contactInfo="Extracts data from Excel worksheet.; COZYROC LLC; SSIS+; © 2006-2019 COZYROC LLC; All Rights Reserved; http://www.cozyroc.com/;0"
+              description="Extracts data from Excel worksheet."
+              name="Excel Source Plus"
+              usesDispositions="true">
+              <properties>
+                <property
+                  dataType="System.Null"
+                  name="ComponentObject"
+                  typeConverter="NOTBROWSABLE" />
+                <property
+                  dataType="System.String"
+                  description="Source Excel worksheet."
+                  expressionType="Notify"
+                  name="Worksheet"
+                  typeConverter="CozyRoc.SqlServer.SSIS.TableEditor">Missing Documents</property>
+                <property
+                  dataType="System.Boolean"
+                  description="Specifies first row contains column names."
+                  name="FirstRowHasColumnName">true</property>
+                <property
+                  dataType="System.String"
+                  description="Specifies source worksheet region."
+                  expressionType="Notify"
+                  name="Region">1, 1, -1, -1</property>
+                <property
+                  dataType="System.Int32"
+                  description="Specifies output type."
+                  name="OutputType"
+                  typeConverter="CozyRoc.SqlServer.SSIS.ExcelSource+OutputTypes">0</property>
+                <property
+                  dataType="System.String"
+                  name="UserComponentTypeName">CozyRoc.ExcelSource</property>
+              </properties>
+              <connections>
+                <connection
+                  refId="Package\Load New Missing Document List\Excel Source Plus.Connections[EXCEL+]"
+                  connectionManagerID="Package.ConnectionManagers[Excel Connection Manager 2]"
+                  connectionManagerRefId="Package.ConnectionManagers[Excel Connection Manager 2]"
+                  description="COZYROC Excel Connection Manager"
+                  name="EXCEL+" />
+              </connections>
+              <outputs>
+                <output
+                  refId="Package\Load New Missing Document List\Excel Source Plus.Outputs[Excel Source Plus Output]"
+                  name="Excel Source Plus Output">
+                  <outputColumns>
+                    <outputColumn
+                      refId="Package\Load New Missing Document List\Excel Source Plus.Outputs[Excel Source Plus Output].Columns[ProgramID]"
+                      dataType="wstr"
+                      errorOrTruncationOperation="Conversion"
+                      errorRowDisposition="FailComponent"
+                      externalMetadataColumnId="Package\Load New Missing Document List\Excel Source Plus.Outputs[Excel Source Plus Output].ExternalColumns[ProgramID]"
+                      length="250"
+                      lineageId="Package\Load New Missing Document List\Excel Source Plus.Outputs[Excel Source Plus Output].Columns[ProgramID]"
+                      name="ProgramID"
+                      truncationRowDisposition="FailComponent" />
+                    <outputColumn
+                      refId="Package\Load New Missing Document List\Excel Source Plus.Outputs[Excel Source Plus Output].Columns[ClientRecordID]"
+                      dataType="wstr"
+                      errorOrTruncationOperation="Conversion"
+                      errorRowDisposition="FailComponent"
+                      externalMetadataColumnId="Package\Load New Missing Document List\Excel Source Plus.Outputs[Excel Source Plus Output].ExternalColumns[ClientRecordID]"
+                      length="250"
+                      lineageId="Package\Load New Missing Document List\Excel Source Plus.Outputs[Excel Source Plus Output].Columns[ClientRecordID]"
+                      name="ClientRecordID"
+                      truncationRowDisposition="FailComponent" />
+                    <outputColumn
+                      refId="Package\Load New Missing Document List\Excel Source Plus.Outputs[Excel Source Plus Output].Columns[ImportDate]"
+                      dataType="wstr"
+                      errorOrTruncationOperation="Conversion"
+                      errorRowDisposition="FailComponent"
+                      externalMetadataColumnId="Package\Load New Missing Document List\Excel Source Plus.Outputs[Excel Source Plus Output].ExternalColumns[ImportDate]"
+                      length="250"
+                      lineageId="Package\Load New Missing Document List\Excel Source Plus.Outputs[Excel Source Plus Output].Columns[ImportDate]"
+                      name="ImportDate"
+                      truncationRowDisposition="FailComponent" />
+                    <outputColumn
+                      refId="Package\Load New Missing Document List\Excel Source Plus.Outputs[Excel Source Plus Output].Columns[Enrollment_Package]"
+                      dataType="wstr"
+                      errorOrTruncationOperation="Conversion"
+                      errorRowDisposition="FailComponent"
+                      externalMetadataColumnId="Package\Load New Missing Document List\Excel Source Plus.Outputs[Excel Source Plus Output].ExternalColumns[Enrollment_Package]"
+                      length="250"
+                      lineageId="Package\Load New Missing Document List\Excel Source Plus.Outputs[Excel Source Plus Output].Columns[Enrollment_Package]"
+                      name="Enrollment_Package"
+                      truncationRowDisposition="FailComponent" />
+                    <outputColumn
+                      refId="Package\Load New Missing Document List\Excel Source Plus.Outputs[Excel Source Plus Output].Columns[IsBeyondContract]"
+                      dataType="wstr"
+                      errorOrTruncationOperation="Conversion"
+                      errorRowDisposition="FailComponent"
+                      externalMetadataColumnId="Package\Load New Missing Document List\Excel Source Plus.Outputs[Excel Source Plus Output].ExternalColumns[IsBeyondContract]"
+                      length="250"
+                      lineageId="Package\Load New Missing Document List\Excel Source Plus.Outputs[Excel Source Plus Output].Columns[IsBeyondContract]"
+                      name="IsBeyondContract"
+                      truncationRowDisposition="FailComponent" />
+                    <outputColumn
+                      refId="Package\Load New Missing Document List\Excel Source Plus.Outputs[Excel Source Plus Output].Columns[ATC_POA]"
+                      dataType="wstr"
+                      errorOrTruncationOperation="Conversion"
+                      errorRowDisposition="FailComponent"
+                      externalMetadataColumnId="Package\Load New Missing Document List\Excel Source Plus.Outputs[Excel Source Plus Output].ExternalColumns[ATC_POA]"
+                      length="250"
+                      lineageId="Package\Load New Missing Document List\Excel Source Plus.Outputs[Excel Source Plus Output].Columns[ATC_POA]"
+                      name="ATC_POA"
+                      truncationRowDisposition="FailComponent" />
+                    <outputColumn
+                      refId="Package\Load New Missing Document List\Excel Source Plus.Outputs[Excel Source Plus Output].Columns[Credit_Pull_Auth]"
+                      dataType="wstr"
+                      errorOrTruncationOperation="Conversion"
+                      errorRowDisposition="FailComponent"
+                      externalMetadataColumnId="Package\Load New Missing Document List\Excel Source Plus.Outputs[Excel Source Plus Output].ExternalColumns[Credit_Pull_Auth]"
+                      length="250"
+                      lineageId="Package\Load New Missing Document List\Excel Source Plus.Outputs[Excel Source Plus Output].Columns[Credit_Pull_Auth]"
+                      name="Credit_Pull_Auth"
+                      truncationRowDisposition="FailComponent" />
+                    <outputColumn
+                      refId="Package\Load New Missing Document List\Excel Source Plus.Outputs[Excel Source Plus Output].Columns[SPAA]"
+                      dataType="wstr"
+                      errorOrTruncationOperation="Conversion"
+                      errorRowDisposition="FailComponent"
+                      externalMetadataColumnId="Package\Load New Missing Document List\Excel Source Plus.Outputs[Excel Source Plus Output].ExternalColumns[SPAA]"
+                      length="250"
+                      lineageId="Package\Load New Missing Document List\Excel Source Plus.Outputs[Excel Source Plus Output].Columns[SPAA]"
+                      name="SPAA"
+                      truncationRowDisposition="FailComponent" />
+                    <outputColumn
+                      refId="Package\Load New Missing Document List\Excel Source Plus.Outputs[Excel Source Plus Output].Columns[Docusign_Certificate]"
+                      dataType="wstr"
+                      errorOrTruncationOperation="Conversion"
+                      errorRowDisposition="FailComponent"
+                      externalMetadataColumnId="Package\Load New Missing Document List\Excel Source Plus.Outputs[Excel Source Plus Output].ExternalColumns[Docusign_Certificate]"
+                      length="250"
+                      lineageId="Package\Load New Missing Document List\Excel Source Plus.Outputs[Excel Source Plus Output].Columns[Docusign_Certificate]"
+                      name="Docusign_Certificate"
+                      truncationRowDisposition="FailComponent" />
+                  </outputColumns>
+                  <externalMetadataColumns
+                    isUsed="True">
+                    <externalMetadataColumn
+                      refId="Package\Load New Missing Document List\Excel Source Plus.Outputs[Excel Source Plus Output].ExternalColumns[ProgramID]"
+                      dataType="wstr"
+                      length="250"
+                      name="ProgramID" />
+                    <externalMetadataColumn
+                      refId="Package\Load New Missing Document List\Excel Source Plus.Outputs[Excel Source Plus Output].ExternalColumns[ClientRecordID]"
+                      dataType="wstr"
+                      length="250"
+                      name="ClientRecordID" />
+                    <externalMetadataColumn
+                      refId="Package\Load New Missing Document List\Excel Source Plus.Outputs[Excel Source Plus Output].ExternalColumns[ImportDate]"
+                      dataType="wstr"
+                      length="250"
+                      name="ImportDate" />
+                    <externalMetadataColumn
+                      refId="Package\Load New Missing Document List\Excel Source Plus.Outputs[Excel Source Plus Output].ExternalColumns[Enrollment_Package]"
+                      dataType="wstr"
+                      length="250"
+                      name="Enrollment_Package" />
+                    <externalMetadataColumn
+                      refId="Package\Load New Missing Document List\Excel Source Plus.Outputs[Excel Source Plus Output].ExternalColumns[IsBeyondContract]"
+                      dataType="wstr"
+                      length="250"
+                      name="IsBeyondContract" />
+                    <externalMetadataColumn
+                      refId="Package\Load New Missing Document List\Excel Source Plus.Outputs[Excel Source Plus Output].ExternalColumns[ATC_POA]"
+                      dataType="wstr"
+                      length="250"
+                      name="ATC_POA" />
+                    <externalMetadataColumn
+                      refId="Package\Load New Missing Document List\Excel Source Plus.Outputs[Excel Source Plus Output].ExternalColumns[Credit_Pull_Auth]"
+                      dataType="wstr"
+                      length="250"
+                      name="Credit_Pull_Auth" />
+                    <externalMetadataColumn
+                      refId="Package\Load New Missing Document List\Excel Source Plus.Outputs[Excel Source Plus Output].ExternalColumns[SPAA]"
+                      dataType="wstr"
+                      length="250"
+                      name="SPAA" />
+                    <externalMetadataColumn
+                      refId="Package\Load New Missing Document List\Excel Source Plus.Outputs[Excel Source Plus Output].ExternalColumns[Docusign_Certificate]"
+                      dataType="wstr"
+                      length="250"
+                      name="Docusign_Certificate" />
+                    <externalMetadataColumn
+                      refId="Package\Load New Missing Document List\Excel Source Plus.Outputs[Excel Source Plus Output].ExternalColumns[Column10]"
+                      dataType="wstr"
+                      length="250"
+                      name="Column10" />
+                    <externalMetadataColumn
+                      refId="Package\Load New Missing Document List\Excel Source Plus.Outputs[Excel Source Plus Output].ExternalColumns[Enrollment_Package1]"
+                      dataType="wstr"
+                      length="250"
+                      name="Enrollment_Package1" />
+                    <externalMetadataColumn
+                      refId="Package\Load New Missing Document List\Excel Source Plus.Outputs[Excel Source Plus Output].ExternalColumns[IsBeyondContract1]"
+                      dataType="wstr"
+                      length="250"
+                      name="IsBeyondContract1" />
+                    <externalMetadataColumn
+                      refId="Package\Load New Missing Document List\Excel Source Plus.Outputs[Excel Source Plus Output].ExternalColumns[ATC_POA1]"
+                      dataType="wstr"
+                      length="250"
+                      name="ATC_POA1" />
+                    <externalMetadataColumn
+                      refId="Package\Load New Missing Document List\Excel Source Plus.Outputs[Excel Source Plus Output].ExternalColumns[Credit_Pull_Auth1]"
+                      dataType="wstr"
+                      length="250"
+                      name="Credit_Pull_Auth1" />
+                    <externalMetadataColumn
+                      refId="Package\Load New Missing Document List\Excel Source Plus.Outputs[Excel Source Plus Output].ExternalColumns[SPAA1]"
+                      dataType="wstr"
+                      length="250"
+                      name="SPAA1" />
+                    <externalMetadataColumn
+                      refId="Package\Load New Missing Document List\Excel Source Plus.Outputs[Excel Source Plus Output].ExternalColumns[Docusign_Certificate1]"
+                      dataType="wstr"
+                      length="250"
+                      name="Docusign_Certificate1" />
+                    <externalMetadataColumn
+                      refId="Package\Load New Missing Document List\Excel Source Plus.Outputs[Excel Source Plus Output].ExternalColumns[Issues]"
+                      dataType="wstr"
+                      length="250"
+                      name="Issues" />
+                    <externalMetadataColumn
+                      refId="Package\Load New Missing Document List\Excel Source Plus.Outputs[Excel Source Plus Output].ExternalColumns[Column18]"
+                      dataType="wstr"
+                      length="250"
+                      name="Column18" />
+                  </externalMetadataColumns>
+                </output>
+                <output
+                  refId="Package\Load New Missing Document List\Excel Source Plus.Outputs[Excel Source Plus Error Output]"
+                  isErrorOut="true"
+                  name="Excel Source Plus Error Output">
+                  <outputColumns>
+                    <outputColumn
+                      refId="Package\Load New Missing Document List\Excel Source Plus.Outputs[Excel Source Plus Error Output].Columns[ErrorCode]"
+                      dataType="i4"
+                      lineageId="Package\Load New Missing Document List\Excel Source Plus.Outputs[Excel Source Plus Error Output].Columns[ErrorCode]"
+                      name="ErrorCode"
+                      specialFlags="1" />
+                    <outputColumn
+                      refId="Package\Load New Missing Document List\Excel Source Plus.Outputs[Excel Source Plus Error Output].Columns[ErrorColumn]"
+                      dataType="i4"
+                      lineageId="Package\Load New Missing Document List\Excel Source Plus.Outputs[Excel Source Plus Error Output].Columns[ErrorColumn]"
+                      name="ErrorColumn"
+                      specialFlags="2" />
+                    <outputColumn
+                      refId="Package\Load New Missing Document List\Excel Source Plus.Outputs[Excel Source Plus Error Output].Columns[ProgramID]"
+                      dataType="wstr"
+                      errorOrTruncationOperation="Conversion"
+                      errorRowDisposition="FailComponent"
+                      length="250"
+                      lineageId="Package\Load New Missing Document List\Excel Source Plus.Outputs[Excel Source Plus Error Output].Columns[ProgramID]"
+                      name="ProgramID"
+                      truncationRowDisposition="FailComponent" />
+                    <outputColumn
+                      refId="Package\Load New Missing Document List\Excel Source Plus.Outputs[Excel Source Plus Error Output].Columns[ClientRecordID]"
+                      dataType="wstr"
+                      errorOrTruncationOperation="Conversion"
+                      errorRowDisposition="FailComponent"
+                      length="250"
+                      lineageId="Package\Load New Missing Document List\Excel Source Plus.Outputs[Excel Source Plus Error Output].Columns[ClientRecordID]"
+                      name="ClientRecordID"
+                      truncationRowDisposition="FailComponent" />
+                    <outputColumn
+                      refId="Package\Load New Missing Document List\Excel Source Plus.Outputs[Excel Source Plus Error Output].Columns[ImportDate]"
+                      dataType="wstr"
+                      errorOrTruncationOperation="Conversion"
+                      errorRowDisposition="FailComponent"
+                      length="250"
+                      lineageId="Package\Load New Missing Document List\Excel Source Plus.Outputs[Excel Source Plus Error Output].Columns[ImportDate]"
+                      name="ImportDate"
+                      truncationRowDisposition="FailComponent" />
+                    <outputColumn
+                      refId="Package\Load New Missing Document List\Excel Source Plus.Outputs[Excel Source Plus Error Output].Columns[Enrollment_Package]"
+                      dataType="wstr"
+                      errorOrTruncationOperation="Conversion"
+                      errorRowDisposition="FailComponent"
+                      length="250"
+                      lineageId="Package\Load New Missing Document List\Excel Source Plus.Outputs[Excel Source Plus Error Output].Columns[Enrollment_Package]"
+                      name="Enrollment_Package"
+                      truncationRowDisposition="FailComponent" />
+                    <outputColumn
+                      refId="Package\Load New Missing Document List\Excel Source Plus.Outputs[Excel Source Plus Error Output].Columns[IsBeyondContract]"
+                      dataType="wstr"
+                      errorOrTruncationOperation="Conversion"
+                      errorRowDisposition="FailComponent"
+                      length="250"
+                      lineageId="Package\Load New Missing Document List\Excel Source Plus.Outputs[Excel Source Plus Error Output].Columns[IsBeyondContract]"
+                      name="IsBeyondContract"
+                      truncationRowDisposition="FailComponent" />
+                    <outputColumn
+                      refId="Package\Load New Missing Document List\Excel Source Plus.Outputs[Excel Source Plus Error Output].Columns[ATC_POA]"
+                      dataType="wstr"
+                      errorOrTruncationOperation="Conversion"
+                      errorRowDisposition="FailComponent"
+                      length="250"
+                      lineageId="Package\Load New Missing Document List\Excel Source Plus.Outputs[Excel Source Plus Error Output].Columns[ATC_POA]"
+                      name="ATC_POA"
+                      truncationRowDisposition="FailComponent" />
+                    <outputColumn
+                      refId="Package\Load New Missing Document List\Excel Source Plus.Outputs[Excel Source Plus Error Output].Columns[Credit_Pull_Auth]"
+                      dataType="wstr"
+                      errorOrTruncationOperation="Conversion"
+                      errorRowDisposition="FailComponent"
+                      length="250"
+                      lineageId="Package\Load New Missing Document List\Excel Source Plus.Outputs[Excel Source Plus Error Output].Columns[Credit_Pull_Auth]"
+                      name="Credit_Pull_Auth"
+                      truncationRowDisposition="FailComponent" />
+                    <outputColumn
+                      refId="Package\Load New Missing Document List\Excel Source Plus.Outputs[Excel Source Plus Error Output].Columns[SPAA]"
+                      dataType="wstr"
+                      errorOrTruncationOperation="Conversion"
+                      errorRowDisposition="FailComponent"
+                      length="250"
+                      lineageId="Package\Load New Missing Document List\Excel Source Plus.Outputs[Excel Source Plus Error Output].Columns[SPAA]"
+                      name="SPAA"
+                      truncationRowDisposition="FailComponent" />
+                    <outputColumn
+                      refId="Package\Load New Missing Document List\Excel Source Plus.Outputs[Excel Source Plus Error Output].Columns[Docusign_Certificate]"
+                      dataType="wstr"
+                      errorOrTruncationOperation="Conversion"
+                      errorRowDisposition="FailComponent"
+                      length="250"
+                      lineageId="Package\Load New Missing Document List\Excel Source Plus.Outputs[Excel Source Plus Error Output].Columns[Docusign_Certificate]"
+                      name="Docusign_Certificate"
+                      truncationRowDisposition="FailComponent" />
+                    <outputColumn
+                      refId="Package\Load New Missing Document List\Excel Source Plus.Outputs[Excel Source Plus Error Output].Columns[Column10]"
+                      dataType="wstr"
+                      errorOrTruncationOperation="Conversion"
+                      errorRowDisposition="FailComponent"
+                      length="250"
+                      lineageId="Package\Load New Missing Document List\Excel Source Plus.Outputs[Excel Source Plus Error Output].Columns[Column10]"
+                      name="Column10"
+                      truncationRowDisposition="FailComponent" />
+                    <outputColumn
+                      refId="Package\Load New Missing Document List\Excel Source Plus.Outputs[Excel Source Plus Error Output].Columns[Enrollment_Package1]"
+                      dataType="wstr"
+                      errorOrTruncationOperation="Conversion"
+                      errorRowDisposition="FailComponent"
+                      length="250"
+                      lineageId="Package\Load New Missing Document List\Excel Source Plus.Outputs[Excel Source Plus Error Output].Columns[Enrollment_Package1]"
+                      name="Enrollment_Package1"
+                      truncationRowDisposition="FailComponent" />
+                    <outputColumn
+                      refId="Package\Load New Missing Document List\Excel Source Plus.Outputs[Excel Source Plus Error Output].Columns[IsBeyondContract1]"
+                      dataType="wstr"
+                      errorOrTruncationOperation="Conversion"
+                      errorRowDisposition="FailComponent"
+                      length="250"
+                      lineageId="Package\Load New Missing Document List\Excel Source Plus.Outputs[Excel Source Plus Error Output].Columns[IsBeyondContract1]"
+                      name="IsBeyondContract1"
+                      truncationRowDisposition="FailComponent" />
+                    <outputColumn
+                      refId="Package\Load New Missing Document List\Excel Source Plus.Outputs[Excel Source Plus Error Output].Columns[ATC_POA1]"
+                      dataType="wstr"
+                      errorOrTruncationOperation="Conversion"
+                      errorRowDisposition="FailComponent"
+                      length="250"
+                      lineageId="Package\Load New Missing Document List\Excel Source Plus.Outputs[Excel Source Plus Error Output].Columns[ATC_POA1]"
+                      name="ATC_POA1"
+                      truncationRowDisposition="FailComponent" />
+                    <outputColumn
+                      refId="Package\Load New Missing Document List\Excel Source Plus.Outputs[Excel Source Plus Error Output].Columns[Credit_Pull_Auth1]"
+                      dataType="wstr"
+                      errorOrTruncationOperation="Conversion"
+                      errorRowDisposition="FailComponent"
+                      length="250"
+                      lineageId="Package\Load New Missing Document List\Excel Source Plus.Outputs[Excel Source Plus Error Output].Columns[Credit_Pull_Auth1]"
+                      name="Credit_Pull_Auth1"
+                      truncationRowDisposition="FailComponent" />
+                    <outputColumn
+                      refId="Package\Load New Missing Document List\Excel Source Plus.Outputs[Excel Source Plus Error Output].Columns[SPAA1]"
+                      dataType="wstr"
+                      errorOrTruncationOperation="Conversion"
+                      errorRowDisposition="FailComponent"
+                      length="250"
+                      lineageId="Package\Load New Missing Document List\Excel Source Plus.Outputs[Excel Source Plus Error Output].Columns[SPAA1]"
+                      name="SPAA1"
+                      truncationRowDisposition="FailComponent" />
+                    <outputColumn
+                      refId="Package\Load New Missing Document List\Excel Source Plus.Outputs[Excel Source Plus Error Output].Columns[Docusign_Certificate1]"
+                      dataType="wstr"
+                      errorOrTruncationOperation="Conversion"
+                      errorRowDisposition="FailComponent"
+                      length="250"
+                      lineageId="Package\Load New Missing Document List\Excel Source Plus.Outputs[Excel Source Plus Error Output].Columns[Docusign_Certificate1]"
+                      name="Docusign_Certificate1"
+                      truncationRowDisposition="FailComponent" />
+                    <outputColumn
+                      refId="Package\Load New Missing Document List\Excel Source Plus.Outputs[Excel Source Plus Error Output].Columns[Issues]"
+                      dataType="wstr"
+                      errorOrTruncationOperation="Conversion"
+                      errorRowDisposition="FailComponent"
+                      length="250"
+                      lineageId="Package\Load New Missing Document List\Excel Source Plus.Outputs[Excel Source Plus Error Output].Columns[Issues]"
+                      name="Issues"
+                      truncationRowDisposition="FailComponent" />
+                    <outputColumn
+                      refId="Package\Load New Missing Document List\Excel Source Plus.Outputs[Excel Source Plus Error Output].Columns[Column18]"
+                      dataType="wstr"
+                      errorOrTruncationOperation="Conversion"
+                      errorRowDisposition="FailComponent"
+                      length="250"
+                      lineageId="Package\Load New Missing Document List\Excel Source Plus.Outputs[Excel Source Plus Error Output].Columns[Column18]"
+                      name="Column18"
+                      truncationRowDisposition="FailComponent" />
+                  </outputColumns>
+                  <externalMetadataColumns />
+                </output>
+              </outputs>
+            </component>
+            <component
+              refId="Package\Load New Missing Document List\OLE DB Destination"
+              componentClassID="Microsoft.OLEDBDestination"
+              contactInfo="OLE DB Destination;Microsoft Corporation; Microsoft SQL Server; (C) Microsoft Corporation; All Rights Reserved; http://www.microsoft.com/sql/support;4"
+              description="OLE DB Destination"
+              name="OLE DB Destination"
+              usesDispositions="true"
+              version="4">
+              <properties>
+                <property
+                  dataType="System.Int32"
+                  description="The number of seconds before a command times out.  A value of 0 indicates an infinite time-out."
+                  name="CommandTimeout">0</property>
+                <property
+                  dataType="System.String"
+                  description="Specifies the name of the database object used to open a rowset."
+                  name="OpenRowset">[dbo].[stg_ClearOne_MissingData]</property>
+                <property
+                  dataType="System.String"
+                  description="Specifies the variable that contains the name of the database object used to open a rowset."
+                  name="OpenRowsetVariable"></property>
+                <property
+                  dataType="System.String"
+                  description="The SQL command to be executed."
+                  name="SqlCommand"
+                  UITypeEditor="Microsoft.DataTransformationServices.Controls.ModalMultilineStringEditor, Microsoft.DataTransformationServices.Controls, Version=15.0.0.0, Culture=neutral, PublicKeyToken=89845dcd8080cc91"></property>
+                <property
+                  dataType="System.Int32"
+                  description="Specifies the column code page to use when code page information is unavailable from the data source."
+                  name="DefaultCodePage">1252</property>
+                <property
+                  dataType="System.Boolean"
+                  description="Forces the use of the DefaultCodePage property value when describing character data."
+                  name="AlwaysUseDefaultCodePage">false</property>
+                <property
+                  dataType="System.Int32"
+                  description="Specifies the mode used to access the database."
+                  name="AccessMode"
+                  typeConverter="AccessMode">3</property>
+                <property
+                  dataType="System.Boolean"
+                  description="Indicates whether the values supplied for identity columns will be copied to the destination. If false, values for identity columns will be auto-generated at the destination. Applies only if fast load is turned on."
+                  name="FastLoadKeepIdentity">false</property>
+                <property
+                  dataType="System.Boolean"
+                  description="Indicates whether the columns containing null will have null inserted in the destination. If false, columns containing null will have their default values inserted at the destination. Applies only if fast load is turned on."
+                  name="FastLoadKeepNulls">false</property>
+                <property
+                  dataType="System.String"
+                  description="Specifies options to be used with fast load.  Applies only if fast load is turned on."
+                  name="FastLoadOptions">TABLOCK,CHECK_CONSTRAINTS</property>
+                <property
+                  dataType="System.Int32"
+                  description="Specifies when commits are issued during data insertion.  A value of 0 specifies that one commit will be issued at the end of data insertion.  Applies only if fast load is turned on."
+                  name="FastLoadMaxInsertCommitSize">2147483647</property>
+              </properties>
+              <connections>
+                <connection
+                  refId="Package\Load New Missing Document List\OLE DB Destination.Connections[OleDbConnection]"
+                  connectionManagerID="Package.ConnectionManagers[HOU-IT-RSTEWART\SQL2017.BF_Redshift_Staging]"
+                  connectionManagerRefId="Package.ConnectionManagers[HOU-IT-RSTEWART\SQL2017.BF_Redshift_Staging]"
+                  description="The OLE DB runtime connection used to access the database."
+                  name="OleDbConnection" />
+              </connections>
+              <inputs>
+                <input
+                  refId="Package\Load New Missing Document List\OLE DB Destination.Inputs[OLE DB Destination Input]"
+                  errorOrTruncationOperation="Insert"
+                  errorRowDisposition="FailComponent"
+                  hasSideEffects="true"
+                  name="OLE DB Destination Input">
+                  <inputColumns>
+                    <inputColumn
+                      refId="Package\Load New Missing Document List\OLE DB Destination.Inputs[OLE DB Destination Input].Columns[Copy of ProgramID]"
+                      cachedCodepage="1252"
+                      cachedDataType="str"
+                      cachedLength="20"
+                      cachedName="Copy of ProgramID"
+                      externalMetadataColumnId="Package\Load New Missing Document List\OLE DB Destination.Inputs[OLE DB Destination Input].ExternalColumns[ProgramID]"
+                      lineageId="Package\Load New Missing Document List\Data Conversion.Outputs[Data Conversion Output].Columns[Copy of ProgramID]" />
+                    <inputColumn
+                      refId="Package\Load New Missing Document List\OLE DB Destination.Inputs[OLE DB Destination Input].Columns[Copy of ImportDate]"
+                      cachedDataType="date"
+                      cachedName="Copy of ImportDate"
+                      externalMetadataColumnId="Package\Load New Missing Document List\OLE DB Destination.Inputs[OLE DB Destination Input].ExternalColumns[ImportDate]"
+                      lineageId="Package\Load New Missing Document List\Data Conversion.Outputs[Data Conversion Output].Columns[Copy of ImportDate]" />
+                    <inputColumn
+                      refId="Package\Load New Missing Document List\OLE DB Destination.Inputs[OLE DB Destination Input].Columns[Copy of Enrollment_Package]"
+                      cachedDataType="bool"
+                      cachedName="Copy of Enrollment_Package"
+                      externalMetadataColumnId="Package\Load New Missing Document List\OLE DB Destination.Inputs[OLE DB Destination Input].ExternalColumns[Enrollment_Package]"
+                      lineageId="Package\Load New Missing Document List\Data Conversion.Outputs[Data Conversion Output].Columns[Copy of Enrollment_Package]" />
+                    <inputColumn
+                      refId="Package\Load New Missing Document List\OLE DB Destination.Inputs[OLE DB Destination Input].Columns[Copy of IsBeyondContract]"
+                      cachedDataType="bool"
+                      cachedName="Copy of IsBeyondContract"
+                      externalMetadataColumnId="Package\Load New Missing Document List\OLE DB Destination.Inputs[OLE DB Destination Input].ExternalColumns[IsBeyondContract]"
+                      lineageId="Package\Load New Missing Document List\Data Conversion.Outputs[Data Conversion Output].Columns[Copy of IsBeyondContract]" />
+                    <inputColumn
+                      refId="Package\Load New Missing Document List\OLE DB Destination.Inputs[OLE DB Destination Input].Columns[Copy of ATC_POA]"
+                      cachedDataType="bool"
+                      cachedName="Copy of ATC_POA"
+                      externalMetadataColumnId="Package\Load New Missing Document List\OLE DB Destination.Inputs[OLE DB Destination Input].ExternalColumns[ATC_POA]"
+                      lineageId="Package\Load New Missing Document List\Data Conversion.Outputs[Data Conversion Output].Columns[Copy of ATC_POA]" />
+                    <inputColumn
+                      refId="Package\Load New Missing Document List\OLE DB Destination.Inputs[OLE DB Destination Input].Columns[Copy of Docusign_Certificate]"
+                      cachedDataType="bool"
+                      cachedName="Copy of Docusign_Certificate"
+                      externalMetadataColumnId="Package\Load New Missing Document List\OLE DB Destination.Inputs[OLE DB Destination Input].ExternalColumns[Docusign_Certificate]"
+                      lineageId="Package\Load New Missing Document List\Data Conversion.Outputs[Data Conversion Output].Columns[Copy of Docusign_Certificate]" />
+                    <inputColumn
+                      refId="Package\Load New Missing Document List\OLE DB Destination.Inputs[OLE DB Destination Input].Columns[Copy of SPAA]"
+                      cachedDataType="bool"
+                      cachedName="Copy of SPAA"
+                      externalMetadataColumnId="Package\Load New Missing Document List\OLE DB Destination.Inputs[OLE DB Destination Input].ExternalColumns[SPAA]"
+                      lineageId="Package\Load New Missing Document List\Data Conversion.Outputs[Data Conversion Output].Columns[Copy of SPAA]" />
+                    <inputColumn
+                      refId="Package\Load New Missing Document List\OLE DB Destination.Inputs[OLE DB Destination Input].Columns[Copy of Credit_Pull_Auth]"
+                      cachedDataType="bool"
+                      cachedName="Copy of Credit_Pull_Auth"
+                      externalMetadataColumnId="Package\Load New Missing Document List\OLE DB Destination.Inputs[OLE DB Destination Input].ExternalColumns[Credit_Pull_Auth]"
+                      lineageId="Package\Load New Missing Document List\Data Conversion.Outputs[Data Conversion Output].Columns[Copy of Credit_Pull_Auth]" />
+                  </inputColumns>
+                  <externalMetadataColumns
+                    isUsed="True">
+                    <externalMetadataColumn
+                      refId="Package\Load New Missing Document List\OLE DB Destination.Inputs[OLE DB Destination Input].ExternalColumns[ProgramID]"
+                      codePage="1252"
+                      dataType="str"
+                      length="50"
+                      name="ProgramID" />
+                    <externalMetadataColumn
+                      refId="Package\Load New Missing Document List\OLE DB Destination.Inputs[OLE DB Destination Input].ExternalColumns[ImportDate]"
+                      codePage="1252"
+                      dataType="str"
+                      length="50"
+                      name="ImportDate" />
+                    <externalMetadataColumn
+                      refId="Package\Load New Missing Document List\OLE DB Destination.Inputs[OLE DB Destination Input].ExternalColumns[Enrollment_Package]"
+                      codePage="1252"
+                      dataType="str"
+                      length="50"
+                      name="Enrollment_Package" />
+                    <externalMetadataColumn
+                      refId="Package\Load New Missing Document List\OLE DB Destination.Inputs[OLE DB Destination Input].ExternalColumns[IsBeyondContract]"
+                      codePage="1252"
+                      dataType="str"
+                      length="50"
+                      name="IsBeyondContract" />
+                    <externalMetadataColumn
+                      refId="Package\Load New Missing Document List\OLE DB Destination.Inputs[OLE DB Destination Input].ExternalColumns[ATC_POA]"
+                      codePage="1252"
+                      dataType="str"
+                      length="50"
+                      name="ATC_POA" />
+                    <externalMetadataColumn
+                      refId="Package\Load New Missing Document List\OLE DB Destination.Inputs[OLE DB Destination Input].ExternalColumns[Credit_Pull_Auth]"
+                      codePage="1252"
+                      dataType="str"
+                      length="50"
+                      name="Credit_Pull_Auth" />
+                    <externalMetadataColumn
+                      refId="Package\Load New Missing Document List\OLE DB Destination.Inputs[OLE DB Destination Input].ExternalColumns[SPAA]"
+                      codePage="1252"
+                      dataType="str"
+                      length="50"
+                      name="SPAA" />
+                    <externalMetadataColumn
+                      refId="Package\Load New Missing Document List\OLE DB Destination.Inputs[OLE DB Destination Input].ExternalColumns[Docusign_Certificate]"
+                      codePage="1252"
+                      dataType="str"
+                      length="50"
+                      name="Docusign_Certificate" />
+                  </externalMetadataColumns>
+                </input>
+              </inputs>
+              <outputs>
+                <output
+                  refId="Package\Load New Missing Document List\OLE DB Destination.Outputs[OLE DB Destination Error Output]"
+                  exclusionGroup="1"
+                  isErrorOut="true"
+                  name="OLE DB Destination Error Output"
+                  synchronousInputId="Package\Load New Missing Document List\OLE DB Destination.Inputs[OLE DB Destination Input]">
+                  <outputColumns>
+                    <outputColumn
+                      refId="Package\Load New Missing Document List\OLE DB Destination.Outputs[OLE DB Destination Error Output].Columns[ErrorCode]"
+                      dataType="i4"
+                      lineageId="Package\Load New Missing Document List\OLE DB Destination.Outputs[OLE DB Destination Error Output].Columns[ErrorCode]"
+                      name="ErrorCode"
+                      specialFlags="1" />
+                    <outputColumn
+                      refId="Package\Load New Missing Document List\OLE DB Destination.Outputs[OLE DB Destination Error Output].Columns[ErrorColumn]"
+                      dataType="i4"
+                      lineageId="Package\Load New Missing Document List\OLE DB Destination.Outputs[OLE DB Destination Error Output].Columns[ErrorColumn]"
+                      name="ErrorColumn"
+                      specialFlags="2" />
+                  </outputColumns>
+                  <externalMetadataColumns />
+                </output>
+              </outputs>
+            </component>
+          </components>
+          <paths>
+            <path
+              refId="Package\Load New Missing Document List.Paths[Data Conversion Output]"
+              endId="Package\Load New Missing Document List\OLE DB Destination.Inputs[OLE DB Destination Input]"
+              name="Data Conversion Output"
+              startId="Package\Load New Missing Document List\Data Conversion.Outputs[Data Conversion Output]" />
+            <path
+              refId="Package\Load New Missing Document List.Paths[Excel Source Plus Output]"
+              endId="Package\Load New Missing Document List\Data Conversion.Inputs[Data Conversion Input]"
+              name="Excel Source Plus Output"
+              startId="Package\Load New Missing Document List\Excel Source Plus.Outputs[Excel Source Plus Output]" />
+          </paths>
+        </pipeline>
+      </DTS:ObjectData>
+    </DTS:Executable>
+    <DTS:Executable
+      DTS:refId="Package\Load Program List"
+      DTS:CreationName="Microsoft.Pipeline"
+      DTS:Description="Data Flow Task"
+      DTS:DTSID="{35750FCB-7825-4182-AEB5-082F06662477}"
+      DTS:ExecutableType="Microsoft.Pipeline"
+      DTS:LocaleID="-1"
+      DTS:ObjectName="Load Program List"
+      DTS:TaskContact="Performs high-performance data extraction, transformation and loading;Microsoft Corporation; Microsoft SQL Server; (C) Microsoft Corporation; All Rights Reserved;http://www.microsoft.com/sql/support/default.asp;1">
+      <DTS:Variables />
+      <DTS:ObjectData>
+        <pipeline
+          version="1">
+          <components>
+            <component
+              refId="Package\Load Program List\ODBC Source"
+              componentClassID="Attunity.SSISODBCSrc"
+              description="ODBC Source"
+              name="ODBC Source"
+              usesDispositions="true"
+              version="7">
+              <properties>
+                <property
+                  dataType="System.String"
+                  description="The name of the table to be fetched."
+                  expressionType="Notify"
+                  name="TableName"></property>
+                <property
+                  dataType="System.String"
+                  description="The SQL command to be executed."
+                  expressionType="Notify"
+                  name="SqlCommand"
+                  UITypeEditor="Microsoft.DataTransformationServices.Controls.ModalMultilineStringEditor, Microsoft.DataTransformationServices.Controls, Version=15.0.0.0, Culture=neutral, PublicKeyToken=89845dcd8080cc91">SELECT
+cast(p.name as varchar(20)) as ClietnID
+, cast(sfuser.name as varchar(50)) as AgentName
+, cast(dtmgr.externalsalesmanager as varchar(50)) as SalesManager
+FROM
+datalake_sf.sf_nu_dse_program_c_src p
+         LEFT JOIN datalake_sf.sf_user_src sfuser ON sfuser.name = p.salesperson__c
+         LEFT OUTER JOIN  (SELECT DISTINCT name as externalsalesmanager, id
+                            FROM datalake_sf.sf_user_src
+                            WHERE  name notnull
+                              AND name NOT IN ('Xprt Backend', 'Xprt Front End')) dtMgr
+on sfuser.id = dtmgr.id</property>
+                <property
+                  dataType="System.Int32"
+                  description="Specify the number of rows fetched per batch."
+                  expressionType="Notify"
+                  name="BatchSize">1000</property>
+                <property
+                  dataType="System.Int32"
+                  description="Determines the chunk size allocation for LOB columns"
+                  expressionType="Notify"
+                  name="LobChunkSize">32768</property>
+                <property
+                  dataType="System.Boolean"
+                  description="Determines how the component exposes CHAR columns. If False, CHAR columns are exposed as (multi-)byte strings (DT_STR), if True, CHAR columns are exposed as wide strings (DT_WSTR)"
+                  expressionType="Notify"
+                  name="ExposeCharColumnsAsUnicode">false</property>
+                <property
+                  dataType="System.Int32"
+                  description="The number of seconds to wait for an SQL statement to execute before returning to the application."
+                  expressionType="Notify"
+                  name="StatementTimeout">0</property>
+                <property
+                  dataType="System.Int32"
+                  description="The code page to use when code page information is unavailable from the data source."
+                  expressionType="Notify"
+                  name="DefaultCodePage">1252</property>
+                <property
+                  dataType="System.Int32"
+                  description="The method used for fetching data."
+                  expressionType="Notify"
+                  name="FetchMethod">1</property>
+                <property
+                  dataType="System.Int32"
+                  description="The ODBC C data type for binding numeric data."
+                  expressionType="Notify"
+                  name="BindNumericAs">0</property>
+                <property
+                  dataType="System.Int32"
+                  description="Determines how the component would bind columns of (multi)-byte string types (i.e., SQL_CHAR, SQL_VARCHAR, SQL_LONGVARCHAR). The options are: Unicode (SQL_C_WCHAR) and ANSI (SQL_C_CHAR)."
+                  expressionType="Notify"
+                  name="BindCharColumnsAs">0</property>
+                <property
+                  dataType="System.Int32"
+                  description="The mode used to access the database."
+                  expressionType="Notify"
+                  name="AccessMode"
+                  typeConverter="AccessMode">1</property>
+              </properties>
+              <connections>
+                <connection
+                  refId="Package\Load Program List\ODBC Source.Connections[ODBCConnection]"
+                  connectionManagerID="Package.ConnectionManagers[BF_Redsift_Prod.rstewart]"
+                  connectionManagerRefId="Package.ConnectionManagers[BF_Redsift_Prod.rstewart]"
+                  description="The ODBC runtime connection used to access the database."
+                  name="ODBCConnection" />
+              </connections>
+              <outputs>
+                <output
+                  refId="Package\Load Program List\ODBC Source.Outputs[ODBC Source Output]"
+                  errorRowDisposition="FailComponent"
+                  name="ODBC Source Output"
+                  truncationRowDisposition="FailComponent">
+                  <outputColumns>
+                    <outputColumn
+                      refId="Package\Load Program List\ODBC Source.Outputs[ODBC Source Output].Columns[clietnid]"
+                      dataType="wstr"
+                      externalMetadataColumnId="Package\Load Program List\ODBC Source.Outputs[ODBC Source Output].ExternalColumns[clietnid]"
+                      length="20"
+                      lineageId="Package\Load Program List\ODBC Source.Outputs[ODBC Source Output].Columns[clietnid]"
+                      name="clietnid" />
+                    <outputColumn
+                      refId="Package\Load Program List\ODBC Source.Outputs[ODBC Source Output].Columns[agentname]"
+                      dataType="wstr"
+                      externalMetadataColumnId="Package\Load Program List\ODBC Source.Outputs[ODBC Source Output].ExternalColumns[agentname]"
+                      length="50"
+                      lineageId="Package\Load Program List\ODBC Source.Outputs[ODBC Source Output].Columns[agentname]"
+                      name="agentname" />
+                    <outputColumn
+                      refId="Package\Load Program List\ODBC Source.Outputs[ODBC Source Output].Columns[salesmanager]"
+                      dataType="wstr"
+                      externalMetadataColumnId="Package\Load Program List\ODBC Source.Outputs[ODBC Source Output].ExternalColumns[salesmanager]"
+                      length="50"
+                      lineageId="Package\Load Program List\ODBC Source.Outputs[ODBC Source Output].Columns[salesmanager]"
+                      name="salesmanager" />
+                  </outputColumns>
+                  <externalMetadataColumns
+                    isUsed="True">
+                    <externalMetadataColumn
+                      refId="Package\Load Program List\ODBC Source.Outputs[ODBC Source Output].ExternalColumns[clietnid]"
+                      dataType="wstr"
+                      length="20"
+                      name="clietnid" />
+                    <externalMetadataColumn
+                      refId="Package\Load Program List\ODBC Source.Outputs[ODBC Source Output].ExternalColumns[agentname]"
+                      dataType="wstr"
+                      length="50"
+                      name="agentname" />
+                    <externalMetadataColumn
+                      refId="Package\Load Program List\ODBC Source.Outputs[ODBC Source Output].ExternalColumns[salesmanager]"
+                      dataType="wstr"
+                      length="50"
+                      name="salesmanager" />
+                  </externalMetadataColumns>
+                </output>
+                <output
+                  refId="Package\Load Program List\ODBC Source.Outputs[ODBC Source Error Output]"
+                  isErrorOut="true"
+                  name="ODBC Source Error Output">
+                  <outputColumns>
+                    <outputColumn
+                      refId="Package\Load Program List\ODBC Source.Outputs[ODBC Source Error Output].Columns[clietnid]"
+                      dataType="wstr"
+                      externalMetadataColumnId="Package\Load Program List\ODBC Source.Outputs[ODBC Source Output].ExternalColumns[clietnid]"
+                      length="20"
+                      lineageId="Package\Load Program List\ODBC Source.Outputs[ODBC Source Error Output].Columns[clietnid]"
+                      name="clietnid" />
+                    <outputColumn
+                      refId="Package\Load Program List\ODBC Source.Outputs[ODBC Source Error Output].Columns[agentname]"
+                      dataType="wstr"
+                      externalMetadataColumnId="Package\Load Program List\ODBC Source.Outputs[ODBC Source Output].ExternalColumns[agentname]"
+                      length="50"
+                      lineageId="Package\Load Program List\ODBC Source.Outputs[ODBC Source Error Output].Columns[agentname]"
+                      name="agentname" />
+                    <outputColumn
+                      refId="Package\Load Program List\ODBC Source.Outputs[ODBC Source Error Output].Columns[salesmanager]"
+                      dataType="wstr"
+                      externalMetadataColumnId="Package\Load Program List\ODBC Source.Outputs[ODBC Source Output].ExternalColumns[salesmanager]"
+                      length="50"
+                      lineageId="Package\Load Program List\ODBC Source.Outputs[ODBC Source Error Output].Columns[salesmanager]"
+                      name="salesmanager" />
+                    <outputColumn
+                      refId="Package\Load Program List\ODBC Source.Outputs[ODBC Source Error Output].Columns[ErrorCode]"
+                      dataType="i4"
+                      lineageId="Package\Load Program List\ODBC Source.Outputs[ODBC Source Error Output].Columns[ErrorCode]"
+                      name="ErrorCode"
+                      specialFlags="1" />
+                    <outputColumn
+                      refId="Package\Load Program List\ODBC Source.Outputs[ODBC Source Error Output].Columns[ErrorColumn]"
+                      dataType="i4"
+                      lineageId="Package\Load Program List\ODBC Source.Outputs[ODBC Source Error Output].Columns[ErrorColumn]"
+                      name="ErrorColumn"
+                      specialFlags="2" />
+                  </outputColumns>
+                  <externalMetadataColumns />
+                </output>
+              </outputs>
+            </component>
+            <component
+              refId="Package\Load Program List\OLE DB Destination"
+              componentClassID="Microsoft.OLEDBDestination"
+              contactInfo="OLE DB Destination;Microsoft Corporation; Microsoft SQL Server; (C) Microsoft Corporation; All Rights Reserved; http://www.microsoft.com/sql/support;4"
+              description="OLE DB Destination"
+              name="OLE DB Destination"
+              usesDispositions="true"
+              version="4">
+              <properties>
+                <property
+                  dataType="System.Int32"
+                  description="The number of seconds before a command times out.  A value of 0 indicates an infinite time-out."
+                  name="CommandTimeout">0</property>
+                <property
+                  dataType="System.String"
+                  description="Specifies the name of the database object used to open a rowset."
+                  name="OpenRowset">[stg_AllPrograms]</property>
+                <property
+                  dataType="System.String"
+                  description="Specifies the variable that contains the name of the database object used to open a rowset."
+                  name="OpenRowsetVariable"></property>
+                <property
+                  dataType="System.String"
+                  description="The SQL command to be executed."
+                  name="SqlCommand"
+                  UITypeEditor="Microsoft.DataTransformationServices.Controls.ModalMultilineStringEditor, Microsoft.DataTransformationServices.Controls, Version=15.0.0.0, Culture=neutral, PublicKeyToken=89845dcd8080cc91"></property>
+                <property
+                  dataType="System.Int32"
+                  description="Specifies the column code page to use when code page information is unavailable from the data source."
+                  name="DefaultCodePage">1252</property>
+                <property
+                  dataType="System.Boolean"
+                  description="Forces the use of the DefaultCodePage property value when describing character data."
+                  name="AlwaysUseDefaultCodePage">false</property>
+                <property
+                  dataType="System.Int32"
+                  description="Specifies the mode used to access the database."
+                  name="AccessMode"
+                  typeConverter="AccessMode">0</property>
+                <property
+                  dataType="System.Boolean"
+                  description="Indicates whether the values supplied for identity columns will be copied to the destination. If false, values for identity columns will be auto-generated at the destination. Applies only if fast load is turned on."
+                  name="FastLoadKeepIdentity">false</property>
+                <property
+                  dataType="System.Boolean"
+                  description="Indicates whether the columns containing null will have null inserted in the destination. If false, columns containing null will have their default values inserted at the destination. Applies only if fast load is turned on."
+                  name="FastLoadKeepNulls">false</property>
+                <property
+                  dataType="System.String"
+                  description="Specifies options to be used with fast load.  Applies only if fast load is turned on."
+                  name="FastLoadOptions"></property>
+                <property
+                  dataType="System.Int32"
+                  description="Specifies when commits are issued during data insertion.  A value of 0 specifies that one commit will be issued at the end of data insertion.  Applies only if fast load is turned on."
+                  name="FastLoadMaxInsertCommitSize">2147483647</property>
+              </properties>
+              <connections>
+                <connection
+                  refId="Package\Load Program List\OLE DB Destination.Connections[OleDbConnection]"
+                  connectionManagerID="Package.ConnectionManagers[HOU-IT-RSTEWART\SQL2017.BF_Redshift_Staging]"
+                  connectionManagerRefId="Package.ConnectionManagers[HOU-IT-RSTEWART\SQL2017.BF_Redshift_Staging]"
+                  description="The OLE DB runtime connection used to access the database."
+                  name="OleDbConnection" />
+              </connections>
+              <inputs>
+                <input
+                  refId="Package\Load Program List\OLE DB Destination.Inputs[OLE DB Destination Input]"
+                  errorOrTruncationOperation="Insert"
+                  errorRowDisposition="FailComponent"
+                  hasSideEffects="true"
+                  name="OLE DB Destination Input">
+                  <inputColumns>
+                    <inputColumn
+                      refId="Package\Load Program List\OLE DB Destination.Inputs[OLE DB Destination Input].Columns[clietnid]"
+                      cachedDataType="wstr"
+                      cachedLength="20"
+                      cachedName="clietnid"
+                      externalMetadataColumnId="Package\Load Program List\OLE DB Destination.Inputs[OLE DB Destination Input].ExternalColumns[clietnid]"
+                      lineageId="Package\Load Program List\ODBC Source.Outputs[ODBC Source Output].Columns[clietnid]" />
+                    <inputColumn
+                      refId="Package\Load Program List\OLE DB Destination.Inputs[OLE DB Destination Input].Columns[agentname]"
+                      cachedDataType="wstr"
+                      cachedLength="50"
+                      cachedName="agentname"
+                      externalMetadataColumnId="Package\Load Program List\OLE DB Destination.Inputs[OLE DB Destination Input].ExternalColumns[agentname]"
+                      lineageId="Package\Load Program List\ODBC Source.Outputs[ODBC Source Output].Columns[agentname]" />
+                    <inputColumn
+                      refId="Package\Load Program List\OLE DB Destination.Inputs[OLE DB Destination Input].Columns[salesmanager]"
+                      cachedDataType="wstr"
+                      cachedLength="50"
+                      cachedName="salesmanager"
+                      externalMetadataColumnId="Package\Load Program List\OLE DB Destination.Inputs[OLE DB Destination Input].ExternalColumns[salesmanager]"
+                      lineageId="Package\Load Program List\ODBC Source.Outputs[ODBC Source Output].Columns[salesmanager]" />
+                  </inputColumns>
+                  <externalMetadataColumns
+                    isUsed="True">
+                    <externalMetadataColumn
+                      refId="Package\Load Program List\OLE DB Destination.Inputs[OLE DB Destination Input].ExternalColumns[clietnid]"
+                      dataType="wstr"
+                      length="20"
+                      name="clietnid" />
+                    <externalMetadataColumn
+                      refId="Package\Load Program List\OLE DB Destination.Inputs[OLE DB Destination Input].ExternalColumns[agentname]"
+                      dataType="wstr"
+                      length="50"
+                      name="agentname" />
+                    <externalMetadataColumn
+                      refId="Package\Load Program List\OLE DB Destination.Inputs[OLE DB Destination Input].ExternalColumns[salesmanager]"
+                      dataType="wstr"
+                      length="50"
+                      name="salesmanager" />
+                  </externalMetadataColumns>
+                </input>
+              </inputs>
+              <outputs>
+                <output
+                  refId="Package\Load Program List\OLE DB Destination.Outputs[OLE DB Destination Error Output]"
+                  exclusionGroup="1"
+                  isErrorOut="true"
+                  name="OLE DB Destination Error Output"
+                  synchronousInputId="Package\Load Program List\OLE DB Destination.Inputs[OLE DB Destination Input]">
+                  <outputColumns>
+                    <outputColumn
+                      refId="Package\Load Program List\OLE DB Destination.Outputs[OLE DB Destination Error Output].Columns[ErrorCode]"
+                      dataType="i4"
+                      lineageId="Package\Load Program List\OLE DB Destination.Outputs[OLE DB Destination Error Output].Columns[ErrorCode]"
+                      name="ErrorCode"
+                      specialFlags="1" />
+                    <outputColumn
+                      refId="Package\Load Program List\OLE DB Destination.Outputs[OLE DB Destination Error Output].Columns[ErrorColumn]"
+                      dataType="i4"
+                      lineageId="Package\Load Program List\OLE DB Destination.Outputs[OLE DB Destination Error Output].Columns[ErrorColumn]"
+                      name="ErrorColumn"
+                      specialFlags="2" />
+                  </outputColumns>
+                  <externalMetadataColumns />
+                </output>
+              </outputs>
+            </component>
+          </components>
+          <paths>
+            <path
+              refId="Package\Load Program List.Paths[ODBC Source Output]"
+              endId="Package\Load Program List\OLE DB Destination.Inputs[OLE DB Destination Input]"
+              name="ODBC Source Output"
+              startId="Package\Load Program List\ODBC Source.Outputs[ODBC Source Output]" />
+          </paths>
+        </pipeline>
+      </DTS:ObjectData>
+    </DTS:Executable>
+  </DTS:Executables>
+  <DTS:PrecedenceConstraints>
+    <DTS:PrecedenceConstraint
+      DTS:refId="Package.PrecedenceConstraints[Constraint]"
+      DTS:CreationName=""
+      DTS:DTSID="{C704B101-189D-48B7-AC0F-2C2D848D1A8B}"
+      DTS:From="Package\Load Program List"
+      DTS:LogicalAnd="True"
+      DTS:ObjectName="Constraint"
+      DTS:To="Package\Load New Missing Document List" />
+    <DTS:PrecedenceConstraint
+      DTS:refId="Package.PrecedenceConstraints[Constraint 1]"
+      DTS:CreationName=""
+      DTS:DTSID="{B47DFB46-F8D6-4D4D-827F-0C2C433709C9}"
+      DTS:From="Package\Clear Staging Tables"
+      DTS:LogicalAnd="True"
+      DTS:ObjectName="Constraint 1"
+      DTS:To="Package\Load Program List" />
+    <DTS:PrecedenceConstraint
+      DTS:refId="Package.PrecedenceConstraints[Constraint 2]"
+      DTS:CreationName=""
+      DTS:DTSID="{E57623BA-CDE2-4C69-90F0-DD2A5C8ABF48}"
+      DTS:From="Package\Load New Missing Document List"
+      DTS:LogicalAnd="True"
+      DTS:ObjectName="Constraint 2"
+      DTS:To="Package\Load Excel file" />
+  </DTS:PrecedenceConstraints>
+  <DTS:DesignTimeProperties><![CDATA[<?xml version="1.0"?>
+<!--This CDATA section contains the layout information of the package. The section includes information such as (x,y) coordinates, width, and height.-->
+<!--If you manually edit this section and make a mistake, you can delete it. -->
+<!--The package will still be able to load normally but the previous layout information will be lost and the designer will automatically re-arrange the elements on the design surface.-->
+<Objects
+  Version="8">
+  <!--Each node below will contain properties that do not affect runtime behavior.-->
+  <Package
+    design-time-name="Package">
+    <LayoutInfo>
+      <GraphLayout
+        Capacity="8" xmlns="clr-namespace:Microsoft.SqlServer.IntegrationServices.Designer.Model.Serialization;assembly=Microsoft.SqlServer.IntegrationServices.Graph" xmlns:mssgle="clr-namespace:Microsoft.SqlServer.Graph.LayoutEngine;assembly=Microsoft.SqlServer.Graph" xmlns:assembly="http://schemas.microsoft.com/winfx/2006/xaml">
+        <NodeLayout
+          Size="234,42"
+          Id="Package\Clear Staging Tables"
+          TopLeft="83,19" />
+        <NodeLayout
+          Size="234,42"
+          Id="Package\Load Excel file"
+          TopLeft="83,193" />
+        <NodeLayout
+          Size="234,42"
+          Id="Package\Load New Missing Document List"
+          TopLeft="83,135" />
+        <NodeLayout
+          Size="234,42"
+          Id="Package\Load Program List"
+          TopLeft="83,77" />
+        <EdgeLayout
+          Id="Package.PrecedenceConstraints[Constraint]"
+          TopLeft="83,103.666666666667">
+          <EdgeLayout.Curve>
+            <mssgle:Curve
+              StartConnector="{assembly:Null}"
+              EndConnector="0,46.6666666666667"
+              Start="0,0"
+              End="-7.5,46.6666666666667">
+              <mssgle:Curve.Segments>
+                <mssgle:SegmentCollection
+                  Capacity="5">
+                  <mssgle:LineSegment
+                    End="-18.5,0" />
+                  <mssgle:CubicBezierSegment
+                    Point1="-18.5,0"
+                    Point2="-22.5,0"
+                    Point3="-22.5,4" />
+                  <mssgle:LineSegment
+                    End="-22.5,42.6666666666667" />
+                  <mssgle:CubicBezierSegment
+                    Point1="-22.5,42.6666666666667"
+                    Point2="-22.5,46.6666666666667"
+                    Point3="-18.5,46.6666666666667" />
+                  <mssgle:LineSegment
+                    End="-7.5,46.6666666666667" />
+                </mssgle:SegmentCollection>
+              </mssgle:Curve.Segments>
+            </mssgle:Curve>
+          </EdgeLayout.Curve>
+          <EdgeLayout.Labels>
+            <EdgeLabelCollection />
+          </EdgeLayout.Labels>
+        </EdgeLayout>
+        <EdgeLayout
+          Id="Package.PrecedenceConstraints[Constraint 1]"
+          TopLeft="83,40">
+          <EdgeLayout.Curve>
+            <mssgle:Curve
+              StartConnector="{assembly:Null}"
+              EndConnector="0,52.3333333333333"
+              Start="0,0"
+              End="-7.5,52.3333333333333">
+              <mssgle:Curve.Segments>
+                <mssgle:SegmentCollection
+                  Capacity="5">
+                  <mssgle:LineSegment
+                    End="-18.5,0" />
+                  <mssgle:CubicBezierSegment
+                    Point1="-18.5,0"
+                    Point2="-22.5,0"
+                    Point3="-22.5,4" />
+                  <mssgle:LineSegment
+                    End="-22.5,48.3333333333333" />
+                  <mssgle:CubicBezierSegment
+                    Point1="-22.5,48.3333333333333"
+                    Point2="-22.5,52.3333333333333"
+                    Point3="-18.5,52.3333333333333" />
+                  <mssgle:LineSegment
+                    End="-7.5,52.3333333333333" />
+                </mssgle:SegmentCollection>
+              </mssgle:Curve.Segments>
+            </mssgle:Curve>
+          </EdgeLayout.Curve>
+          <EdgeLayout.Labels>
+            <EdgeLabelCollection />
+          </EdgeLayout.Labels>
+        </EdgeLayout>
+        <EdgeLayout
+          Id="Package.PrecedenceConstraints[Constraint 2]"
+          TopLeft="83,161.666666666667">
+          <EdgeLayout.Curve>
+            <mssgle:Curve
+              StartConnector="{assembly:Null}"
+              EndConnector="0,52.3333333333333"
+              Start="0,0"
+              End="-7.5,52.3333333333333">
+              <mssgle:Curve.Segments>
+                <mssgle:SegmentCollection
+                  Capacity="5">
+                  <mssgle:LineSegment
+                    End="-18.5,0" />
+                  <mssgle:CubicBezierSegment
+                    Point1="-18.5,0"
+                    Point2="-22.5,0"
+                    Point3="-22.5,4" />
+                  <mssgle:LineSegment
+                    End="-22.5,48.3333333333333" />
+                  <mssgle:CubicBezierSegment
+                    Point1="-22.5,48.3333333333333"
+                    Point2="-22.5,52.3333333333333"
+                    Point3="-18.5,52.3333333333333" />
+                  <mssgle:LineSegment
+                    End="-7.5,52.3333333333333" />
+                </mssgle:SegmentCollection>
+              </mssgle:Curve.Segments>
+            </mssgle:Curve>
+          </EdgeLayout.Curve>
+          <EdgeLayout.Labels>
+            <EdgeLabelCollection />
+          </EdgeLayout.Labels>
+        </EdgeLayout>
+      </GraphLayout>
+    </LayoutInfo>
+  </Package>
+  <TaskHost
+    design-time-name="Package\Load Excel file">
+    <LayoutInfo>
+      <GraphLayout
+        Capacity="4" xmlns="clr-namespace:Microsoft.SqlServer.IntegrationServices.Designer.Model.Serialization;assembly=Microsoft.SqlServer.IntegrationServices.Graph" xmlns:mssgle="clr-namespace:Microsoft.SqlServer.Graph.LayoutEngine;assembly=Microsoft.SqlServer.Graph" xmlns:assembly="http://schemas.microsoft.com/winfx/2006/xaml">
+        <NodeLayout
+          Size="150,42"
+          Id="Package\Load Excel file\OLE DB Source"
+          TopLeft="163,71" />
+        <NodeLayout
+          Size="182,42"
+          Id="Package\Load Excel file\Excel Destination Plus"
+          TopLeft="159,182" />
+        <EdgeLayout
+          Id="Package\Load Excel file.Paths[OLE DB Source Output]"
+          TopLeft="238,113">
+          <EdgeLayout.Curve>
+            <mssgle:Curve
+              StartConnector="{assembly:Null}"
+              EndConnector="12,69"
+              Start="0,0"
+              End="12,61.5">
+              <mssgle:Curve.Segments>
+                <mssgle:SegmentCollection
+                  Capacity="5">
+                  <mssgle:LineSegment
+                    End="0,30.5" />
+                  <mssgle:CubicBezierSegment
+                    Point1="0,30.5"
+                    Point2="0,34.5"
+                    Point3="4,34.5" />
+                  <mssgle:LineSegment
+                    End="8,34.5" />
+                  <mssgle:CubicBezierSegment
+                    Point1="8,34.5"
+                    Point2="12,34.5"
+                    Point3="12,38.5" />
+                  <mssgle:LineSegment
+                    End="12,61.5" />
+                </mssgle:SegmentCollection>
+              </mssgle:Curve.Segments>
+            </mssgle:Curve>
+          </EdgeLayout.Curve>
+          <EdgeLayout.Labels>
+            <EdgeLabelCollection />
+          </EdgeLayout.Labels>
+        </EdgeLayout>
+      </GraphLayout>
+    </LayoutInfo>
+  </TaskHost>
+  <PipelineComponentMetadata
+    design-time-name="Package\Load Excel file\OLE DB Source">
+    <Properties>
+      <Property>
+        <Name>DataSourceViewID</Name>
+      </Property>
+    </Properties>
+  </PipelineComponentMetadata>
+  <TaskHost
+    design-time-name="Package\Load New Missing Document List">
+    <LayoutInfo>
+      <GraphLayout
+        Capacity="8" xmlns="clr-namespace:Microsoft.SqlServer.IntegrationServices.Designer.Model.Serialization;assembly=Microsoft.SqlServer.IntegrationServices.Graph" xmlns:mssgle="clr-namespace:Microsoft.SqlServer.Graph.LayoutEngine;assembly=Microsoft.SqlServer.Graph" xmlns:assembly="http://schemas.microsoft.com/winfx/2006/xaml">
+        <NodeLayout
+          Size="161,42"
+          Id="Package\Load New Missing Document List\Excel Source Plus"
+          TopLeft="5.5,5.5" />
+        <NodeLayout
+          Size="171,42"
+          Id="Package\Load New Missing Document List\OLE DB Destination"
+          TopLeft="20.5,194.5" />
+        <NodeLayout
+          Size="156,42"
+          Id="Package\Load New Missing Document List\Data Conversion"
+          TopLeft="26,104" />
+        <EdgeLayout
+          Id="Package\Load New Missing Document List.Paths[Excel Source Plus Output]"
+          TopLeft="86,47.5">
+          <EdgeLayout.Curve>
+            <mssgle:Curve
+              StartConnector="{assembly:Null}"
+              EndConnector="18,56.5"
+              Start="0,0"
+              End="18,49">
+              <mssgle:Curve.Segments>
+                <mssgle:SegmentCollection
+                  Capacity="5">
+                  <mssgle:LineSegment
+                    End="0,24.25" />
+                  <mssgle:CubicBezierSegment
+                    Point1="0,24.25"
+                    Point2="0,28.25"
+                    Point3="4,28.25" />
+                  <mssgle:LineSegment
+                    End="14,28.25" />
+                  <mssgle:CubicBezierSegment
+                    Point1="14,28.25"
+                    Point2="18,28.25"
+                    Point3="18,32.25" />
+                  <mssgle:LineSegment
+                    End="18,49" />
+                </mssgle:SegmentCollection>
+              </mssgle:Curve.Segments>
+            </mssgle:Curve>
+          </EdgeLayout.Curve>
+          <EdgeLayout.Labels>
+            <EdgeLabelCollection />
+          </EdgeLayout.Labels>
+        </EdgeLayout>
+        <EdgeLayout
+          Id="Package\Load New Missing Document List.Paths[Data Conversion Output]"
+          TopLeft="105,146">
+          <EdgeLayout.Curve>
+            <mssgle:Curve
+              StartConnector="{assembly:Null}"
+              EndConnector="0,48.5"
+              Start="0,0"
+              End="0,41">
+              <mssgle:Curve.Segments>
+                <mssgle:SegmentCollection
+                  Capacity="5">
+                  <mssgle:LineSegment
+                    End="0,41" />
+                </mssgle:SegmentCollection>
+              </mssgle:Curve.Segments>
+            </mssgle:Curve>
+          </EdgeLayout.Curve>
+          <EdgeLayout.Labels>
+            <EdgeLabelCollection />
+          </EdgeLayout.Labels>
+        </EdgeLayout>
+      </GraphLayout>
+    </LayoutInfo>
+  </TaskHost>
+  <PipelineComponentMetadata
+    design-time-name="Package\Load New Missing Document List\OLE DB Destination">
+    <Properties>
+      <Property>
+        <Name>DataSourceViewID</Name>
+      </Property>
+      <Property>
+        <Name>TableInfoObjectType</Name>
+        <Value
+          type="q2:string">Table</Value>
+      </Property>
+    </Properties>
+  </PipelineComponentMetadata>
+  <TaskHost
+    design-time-name="Package\Load Program List">
+    <LayoutInfo>
+      <GraphLayout
+        Capacity="4" xmlns="clr-namespace:Microsoft.SqlServer.IntegrationServices.Designer.Model.Serialization;assembly=Microsoft.SqlServer.IntegrationServices.Graph" xmlns:mssgle="clr-namespace:Microsoft.SqlServer.Graph.LayoutEngine;assembly=Microsoft.SqlServer.Graph" xmlns:assembly="http://schemas.microsoft.com/winfx/2006/xaml">
+        <NodeLayout
+          Size="142,42"
+          Id="Package\Load Program List\ODBC Source"
+          TopLeft="5.5,5.5" />
+        <NodeLayout
+          Size="171,42"
+          Id="Package\Load Program List\OLE DB Destination"
+          TopLeft="43.5,107.5" />
+        <EdgeLayout
+          Id="Package\Load Program List.Paths[ODBC Source Output]"
+          TopLeft="76.5,47.5">
+          <EdgeLayout.Curve>
+            <mssgle:Curve
+              StartConnector="{assembly:Null}"
+              EndConnector="52.5,60"
+              Start="0,0"
+              End="52.5,52.5">
+              <mssgle:Curve.Segments>
+                <mssgle:SegmentCollection
+                  Capacity="5">
+                  <mssgle:LineSegment
+                    End="0,26" />
+                  <mssgle:CubicBezierSegment
+                    Point1="0,26"
+                    Point2="0,30"
+                    Point3="4,30" />
+                  <mssgle:LineSegment
+                    End="48.5,30" />
+                  <mssgle:CubicBezierSegment
+                    Point1="48.5,30"
+                    Point2="52.5,30"
+                    Point3="52.5,34" />
+                  <mssgle:LineSegment
+                    End="52.5,52.5" />
+                </mssgle:SegmentCollection>
+              </mssgle:Curve.Segments>
+            </mssgle:Curve>
+          </EdgeLayout.Curve>
+          <EdgeLayout.Labels>
+            <EdgeLabelCollection />
+          </EdgeLayout.Labels>
+        </EdgeLayout>
+      </GraphLayout>
+    </LayoutInfo>
+  </TaskHost>
+  <PipelineComponentMetadata
+    design-time-name="Package\Load Program List\ODBC Source">
+    <Properties>
+      <Property>
+        <Name>DataSourceViewID</Name>
+      </Property>
+    </Properties>
+  </PipelineComponentMetadata>
+  <PipelineComponentMetadata
+    design-time-name="Package\Load Program List\OLE DB Destination">
+    <Properties>
+      <Property>
+        <Name>DataSourceViewID</Name>
+      </Property>
+      <Property>
+        <Name>TableInfoObjectType</Name>
+        <Value
+          type="q2:string">Table</Value>
+      </Property>
+    </Properties>
+  </PipelineComponentMetadata>
+</Objects>]]></DTS:DesignTimeProperties>
+</DTS:Executable>
